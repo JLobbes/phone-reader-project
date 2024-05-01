@@ -65,25 +65,23 @@ body.night-mode {
 
 .input-form textarea.night-mode {
     background-color: #222;
+    color: #bbb;
 }
 
 .input-form textarea::-webkit-scrollbar {
     width: 0px;
 }
 
-#go-button {
+#goButton {
     font-size: 20px;
 }
 
 .input-form button {
     position: relative;
     margin: 5px 2.5px;
-    height: 50px;
     width: 50px;
-    text-align: center;
-    font-size: 25px;
-    font-weight: bold;
-    color: #eee;
+    height: 50px;
+    box-sizing: border-box;
     background-color: #111;
     border: none;
     border-radius: 4px;
@@ -99,8 +97,13 @@ body.night-mode {
     background-color: #333;
 }
 
-#toggleNightMode #daylightModeIcon {
-    display: none;
+#decreaseSize p, #increaseSize p, #goButton p {
+    padding: 0;
+    margin: 10px 2px;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    color: #eee;
 }
 
 #toggleNightMode img {

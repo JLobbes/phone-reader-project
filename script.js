@@ -27,8 +27,9 @@ document.addEventListener('DOMContentLoaded', function() {
         textElement.style.transform = `translateX(${initialTranslate + walk}px)`;
     }
 
-    textElement.addEventListener('mousedown', startDrag);
-    textElement.addEventListener('touchstart', startDrag, { passive: true });
+    const textDisplay = document.getElementsByClassName('text-wrapper')[0];
+    textDisplay.addEventListener('mousedown', startDrag);
+    textDisplay.addEventListener('touchstart', startDrag, { passive: true });
 
     document.addEventListener('mouseup', endDrag);
     document.addEventListener('touchend', endDrag);
@@ -120,10 +121,13 @@ function toggleNightDayModeIcons() {
 // Apply the saved theme on load
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('nightMode') === "true") {
+        document.getElementById("daylightModeIcon").style.display = "none";
         document.body.classList.add("night-mode");
         document.querySelectorAll('.text, .text-wrapper, .input-form textarea, .input-form button').forEach(element => {
             element.classList.toggle('night-mode');
-        }); // To-Do: refactor and make this a functions 
+        }); // To-Do: refactor and make this a function
+    } else {
+        document.getElementById("nightModeIcon").style.display = "none";
     }
     const toggleButton = document.getElementById('toggleNightMode');
     toggleButton.addEventListener('click', toggleNightMode);
