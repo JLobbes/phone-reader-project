@@ -1,5 +1,6 @@
 body, html {
     height: 100%;
+    width: 100vw;
     margin: 0;
     display: flex;
     flex-direction: column;
@@ -7,6 +8,11 @@ body, html {
     align-items: center;
     background: #f0f0f0;
     font-family: Arial, sans-serif;
+}
+
+body.night-mode {
+    background: #111;
+    color: #fff;
 }
 
 .text-wrapper {
@@ -21,16 +27,22 @@ body, html {
     border: #000 solid 2px;
 }
 
+.text-wrapper.night-mode {
+    border-color: #fff;
+}
+
 .text {
     white-space: nowrap;
-    font-size: 40px;
     position: absolute;
     will-change: transform;
-    user-select: none;
     cursor: pointer;
     padding: 0; 
-    user-select: none;
+    font-size: 40px;
     font-family: "Noto Serif TC", serif;
+}
+
+.text.night-mode {
+    font-weight: bold;
 }
 
 .input-form {
@@ -51,14 +63,25 @@ body, html {
     border-radius: 4px;
 }
 
+.input-form textarea.night-mode {
+    background-color: #222;
+}
+
 .input-form textarea::-webkit-scrollbar {
     width: 0px;
 }
 
-.input-form button {
-    padding: 10px 20px;
-    margin: 10px 2px;
+#go-button {
     font-size: 20px;
+}
+
+.input-form button {
+    position: relative;
+    box-sizing: border-box;
+    margin: 5px 2.5px;
+    height: 50px;
+    width: 50px;
+    font-size: 25px;
     font-weight: bold;
     color: #eee;
     background-color: #111;
@@ -67,15 +90,33 @@ body, html {
     cursor: pointer;
 }
 
-.input-form button:hover {
-    background-color: #0056b3;
+.input-form button.night-mode {
+    background-color: #666;
+    color: #ddd;
 }
 
+.input-form button:hover {
+    background-color: #333;
+}
+
+#toggleNightMode #daylightModeIcon {
+    display: none;
+}
+
+#toggleNightMode img {
+    position: absolute;
+    display: block;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 25px;
+    height: 25px;
+}
 
 .unselectable {
     -webkit-user-select: none; /* Safari */
     -moz-user-select: none; /* Firefox */
     -ms-user-select: none; /* Internet Explorer/Edge */
     user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Safari, and Firefox 69+ */
-  }
+}
   

@@ -16,14 +16,18 @@
 <body>
     <div class="input-form">
         <textarea id="text-input" placeholder="Paste your text here..."></textarea>
-        <button onclick="updateText()">Go</button>
+        <button id="go-button" onclick="updateText()">Go</button>
     </div>
     <div class="text-wrapper">
-        <div id="text" class="text unselectable">Paste your text here and it will scroll horizontally.</div>
+        <div id="text" class="text unselectable">Paste your text and swipe to scroll horizontally.</div>
     </div>
     <div class="input-form">
-        <button id="decrease-size" class="unselectable">-</button>
-        <button id="increase-size" class="unselectable">+</button>
+        <button id="decreaseSize" class="unselectable">-</button>
+        <button id="increaseSize" class="unselectable">+</button>
+        <button id="toggleNightMode" class="unselectable">
+            <img id="nightModeIcon" src="images/night-mode-icon.png" alt="Image of moon and stars to indicate night mode">
+            <img id="daylightModeIcon" src="images/daylight-mode-icon.png" display="none" alt="Image of sun to indicate daylight mode">
+        </button>
     </div>
     <script src="script.js">
     </script>
