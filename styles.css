@@ -72,10 +72,6 @@ body.night-mode {
     width: 0px;
 }
 
-#goButton {
-    font-size: 20px;
-}
-
 .input-form button {
     position: relative;
     margin: 5px 2.5px;
@@ -97,7 +93,7 @@ body.night-mode {
     background-color: #333;
 }
 
-#decreaseSize p, #increaseSize p, #goButton p {
+#decreaseSize p, #increaseSize p {
     padding: 0;
     margin: 10px 2px;
     font-size: 20px;
@@ -106,7 +102,7 @@ body.night-mode {
     color: #eee;
 }
 
-#toggleNightMode img {
+#toggleNightMode img, #goButton img {
     position: absolute;
     display: block;
     top: 50%;
