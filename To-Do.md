@@ -1,0 +1,8 @@
+- Add dark mode
+- Reduce sliding blurr, increase frame rate? 
+- Add automatic scroll
+- Add picture to text
+- Remove text input box, change to button only
+- Add broad navigation and/or tracking on page
+- Change to extension
+- Add setting saved option
