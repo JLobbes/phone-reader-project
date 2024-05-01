@@ -1,6 +1,6 @@
 Description & Purpose:
 
-    This is a simple left-to-right, single line scrolling reading to help me read.
+    This is a simple left-to-right, single line scrolling reader to help me read.
     It currently is hosted as a static page on GitHub pages at: 
         https://jlobbes.github.io/phone-reader-project/
 
