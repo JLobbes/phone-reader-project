@@ -73,6 +73,7 @@ body.night-mode {
 }
 
 .button-panel button {
+    touch-action: manipulation;
     position: relative;
     margin: 5px 2.5px;
     width: 50px;
