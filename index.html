@@ -14,28 +14,32 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="input-form">
-        <textarea id="text-input" placeholder="Paste your text here..."></textarea>
+    <div class="button-panel">
+        <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+
         <button id="goButton" onclick="updateText()">
             <img src="images/go-icon.png" alt="Text reading go to indicate put text on reader.">
         </button>
     </div>
     <div class="text-wrapper">
-        <div id="text" class="text unselectable">Paste your text and swipe to scroll horizontally.</div>
+        <div id="text" class="unselectable">Paste your text and swipe to scroll horizontally.</div>
     </div>
-    <div class="input-form">
+    <div class="button-panel">
         <button id="decreaseSize" >
-            <p class="unselectable">-</p>
+            <img id="minusIcon" src="images/minus-icon.png" alt="Minus sign to decrease text size">
         </button>
+
         <button id="increaseSize" >
-            <p class="unselectable">+</p>
+            <img id="addIcon" src="images/add-icon.png" alt="Plus sign to increase text size">
         </button>
+        
         <button id="toggleNightMode">
             <img id="nightModeIcon" src="images/night-mode-icon.png" alt="Image of moon and stars to indicate night mode">
             <img id="daylightModeIcon" src="images/daylight-mode-icon.png" alt="Image of sun to indicate daylight mode">
         </button>
     </div>
-    <script src="script.js">
-    </script>
+    <script src="nightMode.js"></script>
+    <script src="updateText.js"></script>
+    <script src="scroll.js"></script>
 </body>
 </html>

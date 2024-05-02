@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', function() {
+    resetPosition();
+    
     const textElement = document.getElementById('text');
     let isDown = false;
     let startX;
     let initialTranslate = 0;
-    resetPosition();
 
     textElement.style.transition = 'transform 0.3s ease-out';
 
@@ -48,55 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-function updateText() {
-    const textInput = document.getElementById('text-input');
-    const textElement = document.getElementById('text');
-    textElement.textContent = textInput.value; // Update the text inside the scroller
-    resetPosition(); // Adjust the position each time the text updates
-}
-
-function resetPosition() {
-    const textElement = document.getElementById('text');
-    
-    // Wait for the next frame to ensure the DOM has updated
-    requestAnimationFrame(() => {
-        const textWidth = textElement.offsetWidth;
-        
-        // Translate the text to start from the left, off-screen
-        const initialTranslateX = +textWidth / 2; // or -textWidth if you want it completely off-screen
-        textElement.style.transform = `translateX(${initialTranslateX}px)`;
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const textElement = document.getElementById('text');
-    const increaseButton = document.getElementById('increaseSize');
-    const decreaseButton = document.getElementById('decreaseSize');
-
-    // Function to change the font size
-    function changeFontSize(increase) {
-        const currentSize = parseFloat(window.getComputedStyle(textElement, null).getPropertyValue('font-size'));
-        if (increase) {
-            textElement.style.fontSize = (currentSize + 2) + 'px';
-        } else {
-            textElement.style.fontSize = (currentSize - 2) + 'px';
-        }
-    }
-
-    // Event listeners for buttons
-    increaseButton.addEventListener('click', function() {
-        changeFontSize(true);
-    });
-
-    decreaseButton.addEventListener('click', function() {
-        changeFontSize(false);
-    });
-});
-
 function toggleNightMode() {
     const body = document.body;
     body.classList.toggle("night-mode");
-    document.querySelectorAll('.text, .text-wrapper, .input-form textarea, .input-form button').forEach(element => {
+    document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button').forEach(element => {
         element.classList.toggle('night-mode');
     });
     
@@ -121,13 +77,13 @@ function toggleNightDayModeIcons() {
 // Apply the saved theme on load
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('nightMode') === "true") {
-        document.getElementById("daylightModeIcon").style.display = "none";
+        document.getElementById("nightModeIcon").style.display = "none";
         document.body.classList.add("night-mode");
-        document.querySelectorAll('.text, .text-wrapper, .input-form textarea, .input-form button').forEach(element => {
+        document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button').forEach(element => {
             element.classList.toggle('night-mode');
         }); // To-Do: refactor and make this a function
     } else {
-        document.getElementById("nightModeIcon").style.display = "none";
+        document.getElementById("daylightModeIcon").style.display = "none";
     }
     const toggleButton = document.getElementById('toggleNightMode');
     toggleButton.addEventListener('click', toggleNightMode);
