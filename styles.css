@@ -97,12 +97,15 @@ body.night-mode {
 .button-panel img {
     pointer-events: none;
     position: absolute;
-    display: block;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     width: 25px;
     height: 25px;
+}
+
+.hidden {
+    display: none;
 }
 
 .unselectable {

@@ -8,6 +8,11 @@ class TextScroller {
         this.isDown = false;
         this.cursorStartX = 0;
         this.offsetDuringDrag = 0;
+        // new code ***********
+        this.autoScrollInterval = null;
+        this.scrollSpeed = 2; // pixels per interval
+        this.autoScrollPaused = false; // use when user scroll with autoScroll on
+        // new code end ************
 
         this.addEventListeners();
         this.applySmoothAnimation();
@@ -29,6 +34,11 @@ class TextScroller {
     }
 
     startDrag(e) {
+        if(this.autoScrollInterval != null) {
+            this.autoScrollPaused = true;
+            this.toggleAutoScrollIcons('pauseIcon');
+            this.stopAutoScroll();
+        }
         this.isDown = true;
         this.cursorStartX = (e.pageX || e.touches[0].pageX) - this.scrollerText.offsetLeft;
         this.removeSmoothAnimation();
@@ -44,6 +54,10 @@ class TextScroller {
     }
 
     endDrag() {
+        if(this.autoScrollPaused) {
+            this.autoScrollPaused = false;
+            this.startAutoScroll();
+        }
         this.isDown = false;
         this.translate += this.offsetDuringDrag;
         this.offsetDuringDrag = 0;
@@ -82,6 +96,42 @@ class TextScroller {
         this.scrollerText.textContent = userTextInput;
         this.centerText();
     }
+
+    toggleAutoScroll() {
+        if (this.autoScrollInterval) {
+            this.stopAutoScroll();
+        } else {
+            this.startAutoScroll();
+        }
+    }
+
+    startAutoScroll() {
+        this.autoScrollInterval = setInterval(() => {
+            this.translate -= this.scrollSpeed; // Modify this to adjust the scroll direction and speed
+            this.updatePosition(this.translate);
+        }, 10); // Update every 20 milliseconds
+        this.toggleAutoScrollIcons('stopIcon');
+    }
+
+    stopAutoScroll() {
+        clearInterval(this.autoScrollInterval);
+        this.autoScrollInterval = null;
+
+        if(!this.autoScrollPaused) this.toggleAutoScrollIcons('playIcon');
+    }    
+
+    toggleAutoScrollIcons(iconToShow) {
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const stopIcon = document.getElementById('stopIcon');
+
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.add('hidden')
+        stopIcon.classList.add('hidden')
+
+        const targetIcon = document.getElementById(iconToShow);
+        targetIcon.classList.remove('hidden');
+    }
 }
 
 
@@ -92,7 +142,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
     
     document.getElementById('goButton').addEventListener('click', function() {
-        currentScroller.setText()
+        currentScroller.setText();
     }); 
+
+    document.getElementById('playButton').addEventListener('click', function() {
+        currentScroller.toggleAutoScroll();
+    });
 });
 

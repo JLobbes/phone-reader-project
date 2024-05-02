@@ -15,24 +15,24 @@ function toggleNightDayModeIcons() {
     const nightIcon = document.getElementById('nightModeIcon');
     const daylightIcon = document.getElementById('daylightModeIcon');
     if (document.body.classList.contains('night-mode')) {
-        nightIcon.style.display = 'none';
-        daylightIcon.style.display = 'block';
+        nightIcon.classList.add('hidden');
+        daylightIcon.classList.remove('hidden');
     } else {
-        nightIcon.style.display = 'block';
-        daylightIcon.style.display = 'none';
+        nightIcon.classList.remove('hidden');
+        daylightIcon.classList.add('hidden');
     }
 }
 
 // Apply the saved theme on load
 document.addEventListener('DOMContentLoaded', () => {
     if (localStorage.getItem('nightMode') === "true") {
-        document.getElementById("nightModeIcon").style.display = "none";
+        document.getElementById("daylightModeIcon").classList.remove('hidden');
         document.body.classList.add("night-mode");
         document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button').forEach(element => {
             element.classList.toggle('night-mode');
         }); // To-Do: refactor and make this a function
     } else {
-        document.getElementById("daylightModeIcon").style.display = "none";
+        document.getElementById("nightModeIcon").classList.remove("hidden");
     }
     const toggleButton = document.getElementById('toggleNightMode');
     toggleButton.addEventListener('click', toggleNightMode);

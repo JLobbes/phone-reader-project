@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <title>Scrolling Text Reader</title>
-    
+
     <link rel="stylesheet" href="styles.css">
-    
+
     <!--  Pull Noto Serif Traditional Chinese font -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="button-panel">
         <textarea id="textInput" placeholder="Paste text here..."></textarea>
 
         <button id="goButton">
-            <img src="images/go-icon.png" alt="Text reading 'Go' to indicate put text on reader.">
+            <img src="images/curving-arrow-icon.png" alt="Text reading 'Go' to indicate put text on reader.">
+        </button>
+        <button id="playButton">
+            <img id="playIcon" src="images/play-icon.png" alt="Play icon to start auto-scroll">
+            <img id="stopIcon" class="hidden" src="images/stop-icon.png" alt="Stop icon to stop auto-scroll">
+            <img id="pauseIcon" class="hidden" src="images/pause-icon.png" alt="Pause icon to show auto-scroll is paused">
         </button>
     </div>
     <div class="text-wrapper">
@@ -27,22 +34,24 @@
         </div>
     </div>
     <div class="button-panel">
-        <button id="decreaseSize" >
+        <button id="decreaseSize">
             <img id="minusIcon" src="images/minus-icon.png" alt="Minus sign to decrease text size">
         </button>
 
-        <button id="increaseSize" >
+        <button id="increaseSize">
             <img id="addIcon" src="images/add-icon.png" alt="Plus sign to increase text size">
         </button>
-        
+
         <button id="toggleNightMode">
-            <img id="nightModeIcon" src="images/night-mode-icon.png" alt="Image of moon and stars to indicate night mode">
-            <img id="daylightModeIcon" src="images/daylight-mode-icon.png" alt="Image of sun to indicate daylight mode">
+            <img id="nightModeIcon" class="hidden" src="images/night-mode-icon.png"
+                alt="Image of moon and stars to indicate night mode">
+            <img id="daylightModeIcon" class="hidden" src="images/daylight-mode-icon.png"
+                alt="Image of sun to indicate daylight mode">
         </button>
     </div>
     <script src="js/nightMode.js"></script>
     <script src="js/TextScroller.js"></script>
-    <script src="js/preventDoubleTap.js"></script>
     <script src="js/fontSize.js"></script>
 </body>
+
 </html>
