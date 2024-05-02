@@ -18,7 +18,11 @@
         <textarea id="textInput" placeholder="Paste your text here..."></textarea>
 
         <button id="goButton" onclick="updateText()">
-            <img src="images/go-icon.png" alt="Text reading go to indicate put text on reader.">
+            <img src="images/go-icon.png" alt="Text reading 'Go' to indicate put text on reader.">
+        </button>
+
+        <button id="clearButton" onclick="clearTextArea()">
+            <img src="images/reset-icon.png" alt="Paste icon to indicate paste from clipboard.">
         </button>
     </div>
     <div class="text-wrapper">
@@ -38,8 +42,8 @@
             <img id="daylightModeIcon" src="images/daylight-mode-icon.png" alt="Image of sun to indicate daylight mode">
         </button>
     </div>
-    <script src="nightMode.js"></script>
-    <script src="updateText.js"></script>
-    <script src="scroll.js"></script>
+    <script src="js/nightMode.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/updateText.js"></script>
 </body>
 </html>

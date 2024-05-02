@@ -7,4 +7,7 @@
 - Add broad navigation and/or tracking on page
 - Add instructions
 - Add setting saved option
+- Add full screen mode
+- Add informational bubbles
+- Change buttons to collapsable panel
 - Change to extension
