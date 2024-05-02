@@ -53,7 +53,7 @@ body.night-mode {
 }
 
 .button-panel textarea {
-    width: 90%;
+    width: 30%;
     height: 50px;
     margin: 10px;
     padding: 8px;
@@ -94,6 +94,7 @@ body.night-mode {
 }
 
 .button-panel img {
+    pointer-events: none;
     position: absolute;
     display: block;
     top: 50%;
