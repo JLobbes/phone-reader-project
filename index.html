@@ -15,18 +15,16 @@
 </head>
 <body>
     <div class="button-panel">
-        <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+        <textarea id="textInput" placeholder="Paste text here..."></textarea>
 
-        <button id="goButton" onclick="updateText()">
+        <button id="goButton">
             <img src="images/go-icon.png" alt="Text reading 'Go' to indicate put text on reader.">
-        </button>
-
-        <button id="clearButton" onclick="clearTextArea()">
-            <img src="images/reset-icon.png" alt="Paste icon to indicate paste from clipboard.">
         </button>
     </div>
     <div class="text-wrapper">
-        <div id="text" class="unselectable">Paste your text and swipe to scroll horizontally.</div>
+        <div id="text" class="unselectable">
+            <!-- This is dynamically filled by the TextScroller class being instantiated -->
+        </div>
     </div>
     <div class="button-panel">
         <button id="decreaseSize" >
@@ -43,7 +41,7 @@
         </button>
     </div>
     <script src="js/nightMode.js"></script>
-    <script src="js/scroll.js"></script>
-    <script src="js/updateText.js"></script>
+    <script src="js/TextScroller.js"></script>
+    <script src="js/fontSize.js"></script>
 </body>
 </html>
