@@ -8,11 +8,13 @@ class TextScroller {
         this.isDown = false;
         this.cursorStartX = 0;
         this.offsetDuringDrag = 0;
+        this.dragMultiplier = 3;
+        this.keyboardStep = 100;
 
         this.autoScrollInterval = null;
-        this.scrollSpeed = 2; // pixels per interval
-        this.frameRate = 5; // milliseconds
-        this.autoScrollAnimation = 'transfrom linear';
+        this.scrollSpeed = 400; // pixels per interval
+        this.frameRate = 1250; // milliseconds
+        this.autoScrollAnimation = 'transform 1.250s ease-in-out';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
 
 
@@ -42,14 +44,14 @@ class TextScroller {
             this.stopAutoScroll();
         }
         this.isDown = true;
-        this.cursorStartX = (e.pageX || e.touches[0].pageX) - this.scrollerText.offsetLeft;
+        this.cursorStartX = ((e.pageX || e.touches[0].pageX) * this.dragMultiplier) - this.scrollerText.offsetLeft;
         this.removeSmoothAnimation();
     }
 
     doDrag(e) {
         if (!this.isDown) return;
         e.preventDefault();
-        const cursorEndX = (e.pageX || e.touches[0].pageX) - this.scrollerText.offsetLeft;
+        const cursorEndX = ((e.pageX || e.touches[0].pageX) * this.dragMultiplier) - this.scrollerText.offsetLeft;
         const walk = cursorEndX - this.cursorStartX;
         this.updatePosition(this.translate + walk);
         this.offsetDuringDrag = walk;
@@ -79,11 +81,10 @@ class TextScroller {
     }
 
     keyboardControl(e) {
-        const step = 60;
         if (e.key === "ArrowRight") {
-            this.translate -= step;
+            this.translate -= this.keyboardStep;
         } else if (e.key === "ArrowLeft") {
-            this.translate += step;
+            this.translate += this.keyboardStep;
         }
         this.updatePosition(this.translate);
     }
