@@ -4,12 +4,19 @@ class TextScroller {
         this.scrollerText = document.getElementById('text');
         this.scrollerText.textContent = initialText; 
 
+        this.scrollerBoxWidthNarrowest = 45; // %
+        this.scrollerBoxWidthWider = 70; // %
+        this.scrollerBoxWidthWidest = 95; // %
+        
         this.translate = 0;
         this.isDown = false;
         this.cursorStartX = 0;
         this.offsetDuringDrag = 0;
         this.dragMultiplier = 3;
+
         this.keyboardStep = 100;
+        this.keyLeft = 'ArrowLeft';
+        this.keyRight = 'ArrowRight';
 
         this.autoScrollInterval = null;
         this.scrollSpeed = 400; // pixels per interval
@@ -23,6 +30,7 @@ class TextScroller {
     }
 
     addEventListeners() {
+        // Drag listeners
         this.scrollerBox.addEventListener('mousedown', this.startDrag.bind(this));
         this.scrollerBox.addEventListener('touchstart', this.startDrag.bind(this), { passive: true });
         document.addEventListener('mousemove', this.doDrag.bind(this));
@@ -30,7 +38,17 @@ class TextScroller {
         document.addEventListener('mouseup', this.endDrag.bind(this));
         document.addEventListener('touchend', this.endDrag.bind(this));
 
+        // Key listeners
         document.addEventListener('keydown', this.keyboardControl.bind(this));
+
+        // Button listeners
+        document.getElementById('playButton').addEventListener('click', this.toggleAutoScroll.bind(this));
+        document.getElementById('goButton').addEventListener('click', this.setText.bind(this));
+
+        document.getElementById('makeScrollerBoxNarrow').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthNarrowest));
+        document.getElementById('makeScrollerBoxWider').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWider));
+        document.getElementById('makeScrollerBoxWidest').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWidest));
+
     }
 
     updatePosition(shift) {
@@ -81,12 +99,16 @@ class TextScroller {
     }
 
     keyboardControl(e) {
-        if (e.key === "ArrowRight") {
+        if (e.key === this.keyLeft) {
             this.translate -= this.keyboardStep;
-        } else if (e.key === "ArrowLeft") {
+        } else if (e.key === this.keyRight) {
             this.translate += this.keyboardStep;
         }
         this.updatePosition(this.translate);
+    }
+
+    setScrollerBoxWidth(width) {
+        this.scrollerBox.style.width = `${width}%`;
     }
 
     centerText() {
@@ -174,14 +196,6 @@ document.addEventListener('DOMContentLoaded', () => {
         `
     );
     currentScroller.centerText();
-    
-    
-    document.getElementById('goButton').addEventListener('click', function() {
-        currentScroller.setText();
-    }); 
-
-    document.getElementById('playButton').addEventListener('click', function() {
-        currentScroller.toggleAutoScroll();
-    });
+    currentScroller.setScrollerBoxWidth(70);
 });
 

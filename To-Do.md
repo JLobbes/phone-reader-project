@@ -40,7 +40,7 @@
             - this.frameRate = 5; // milliseconds
             - this.autoScrollAnimation = 'transfrom linear';
 
-- Add adjustable display width
+- ✔ Add adjustable display width
 - Add picture to text
 - Add broad navigation and/or tracking on page
 - Add instructions

@@ -16,8 +16,7 @@ body.night-mode {
 }
 
 .text-wrapper {
-    width: 350px;
-    height: 200px;
+    height: 330px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -47,9 +46,11 @@ body.night-mode {
 
 .button-panel {
     display: flex;
+    width: 250px;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    flex-wrap: wrap;
 }
 
 .button-panel textarea {
@@ -75,7 +76,7 @@ body.night-mode {
 .button-panel button {
     touch-action: manipulation;
     position: relative;
-    margin: 5px 2.5px;
+    margin: 5px 2.5px 0px 2.5px;
     width: 50px;
     height: 50px;
     box-sizing: border-box;
