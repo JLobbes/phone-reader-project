@@ -25,7 +25,8 @@
         <button id="playButton">
             <img id="playIcon" src="images/play-icon.png" alt="Play icon to start auto-scroll">
             <img id="stopIcon" class="hidden" src="images/stop-icon.png" alt="Stop icon to stop auto-scroll">
-            <img id="pauseIcon" class="hidden" src="images/pause-icon.png" alt="Pause icon to show auto-scroll is paused">
+            <img id="pauseIcon" class="hidden" src="images/pause-icon.png"
+                alt="Pause icon to show auto-scroll is paused">
         </button>
     </div>
     <div class="text-wrapper">
@@ -33,63 +34,145 @@
             <!-- This is dynamically filled by the TextScroller class being instantiated -->
         </div>
     </div>
-    <div class="button-panel">
-        <button id="decreaseSize">
-            <img id="minusIcon" src="images/minus-icon.png" alt="Minus sign to decrease text size">
-        </button>
-
-        <button id="increaseSize">
-            <img id="addIcon" src="images/add-icon.png" alt="Plus sign to increase text size">
-        </button>
+    <div id="settings" class="button-panel">
         
-        <button id="toggleNightMode">
-            <img id="nightModeIcon" class="hidden" src="images/night-mode-icon.png"
-            alt="Image of moon and stars to indicate night mode">
-            <img id="daylightModeIcon" class="hidden" src="images/daylight-mode-icon.png"
-            alt="Image of sun to indicate daylight mode">
-        </button>
+        <div>
+            <button id="openSettings" class="">
+                <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate settings">
+            </button>
+            <button id="closeSettings" class="hidden">
+                <img id="settingsIconActive" src="images/spinning-setting-gear-icon.gif"
+                    alt="Spinning gear icon to indicate setting are open">
+            </button>
+        </div>
 
-        <button id="openSettings">
-            <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate open settings">
-        </button>
+        <div class="toggle-button-container hidden">
+            <button class="toggle-night-mode">
+                <img id="nightModeIcon" src="images/night-mode-icon.png"
+                    alt="Image of moon and stars to indicate night mode">
+            </button>   
+            <button class="toggle-night-mode hidden">
+                <img id="daylightModeIcon" src="images/daylight-mode-icon.png"
+                    alt="Image of sun to indicate daylight mode">
+            </button>
+        </div>
         
-        <button id="makeScrollerBoxNarrow">
-            <img id="narrowestScollerBox" src="images/narrowest-icon.png" alt="Doubleheaded arrow between vertical lines to indicate narrowest scrollbox setting.">
-        </button>
+        <div class="toggle-button-container hidden" >
+            <button id="decreaseSize">
+                <img id="minusIcon" src="images/minus-icon.png" alt="Minus sign to decrease text size">
+            </button>
 
-        <button id="makeScrollerBoxWider">
-            <img id="widerScollerBox" src="images/wider-icon.png" alt="Doubleheaded arrow between vertical lines to indicate wider scrollbox setting.">
-        </button>
-
-        <button id="makeScrollerBoxWidest">
-            <img id="widestScollerBox" src="images/widest-icon.png" alt="Doubleheaded arrow between vertical lines to indicate widest scrollbox setting.">
-        </button>
+            <button id="increaseSize" class="hidden">
+                <img id="addIcon" src="images/add-icon.png" alt="Plus sign to increase text size">
+            </button>
+        </div>
 
 
-        <button id="openSettings">
-            <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate open settings">
-        </button>
+        <div class="toggle-button-container hidden" >
+            <button id="makeScrollerBoxWider" class="hidden">
+                <img id="narrowestScrollerBoxIcon" src="images/narrowest-icon.png"
+                    alt="Doubleheaded arrow between vertical lines to indicate narrowest scrollbox setting.">
+            </button>
 
-        <button id="openSettings">
-            <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate open settings">
-        </button>
+            <button id="makeScrollerBoxWidest">
+                <img id="widerScrollerBoxIcon" src="images/wider-icon.png"
+                    alt="Doubleheaded arrow between vertical lines to indicate wider scrollbox setting.">
+            </button>
 
-        <button id="openSettings">
-            <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate open settings">
-        </button>
+            <button id="makeScrollerBoxNarrow" class="hidden">
+                <img id="widestScrollerBoxIcon" src="images/widest-icon.png"
+                    alt="Doubleheaded arrow between vertical lines to indicate widest scrollbox setting.">
+            </button>
+        </div>
 
-        <button id="openSettings">
-            <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate open settings">
-        </button>
+        <div class="toggle-button-container hidden">
+            <button id="makeScrollerBoxTaller" class="hidden">
+                <img id="shortScrollerBoxIcon" src="images/shortest-icon.png"
+                    alt="Doubleheaded arrow between horizontal lines to indicate shortest scrollbox setting.">
+            </button>
 
-        <button id="openSettings">
-            <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate open settings">
-        </button>
+            <button id="makeScrollerBoxTallest">
+                <img id="tallerScrollerBoxIcon" src="images/taller-icon.png"
+                    alt="Doubleheaded arrow between horizontal lines to indicate taller scrollbox setting.">
+            </button>
+
+            <button id="makeScrollerBoxShort" class="hidden">
+                <img id="tallestScrollerBoxIcon" src="images/tallest-icon.png"
+                    alt="Doubleheaded arrow between horizontal lines to indicate tallest scrollbox setting.">
+            </button>
+        </div>
+
+        <div class="toggle-button-container hidden" >
+            <button id="keypressMedium" class="hidden"> 
+                <img id="keypressSmallIcon" src="images/keypress-icon.png"
+                    alt="Arrow left to indicate key stroke moves text less.">
+            </button>
+
+            <button id="keypressLarge">
+                <img id="keypressMediumIcon" src="images/keypress-double-icon.png"
+                    alt="Arrow left to indicate key stroke moves text more.">
+            </button>
+
+            <button id="keypressSmall" class="hidden">
+                <img id="keypressLargeIcon" src="images/keypress-triple-icon.png"
+                    alt="Arrow left to indicate key stroke moves text most.">
+            </button>
+        </div>
+
+        <div class="toggle-button-container hidden">
+            <button id="dragSpeedFast" class="hidden">
+                <img id="slowPointerIcon" src="images/pointer-icon-single.png"
+                    alt="Gear icon to indicate open settings">
+            </button>
+
+            <button id="dragSpeedFastest" class="hidden">
+                <img id="settingsIcon" src="images/pointer-icon-double.png" alt="Gear icon to indicate open settings">
+            </button>
+
+            <button id="dragSpeedSlow">
+                <img id="settingsIcon" src="images/pointer-icon-triple.png" alt="Gear icon to indicate open settings">
+            </button>
+        </div>
+
+        <div class="toggle-button-container hidden" >
+            <button id="autoSwipeFastest" class="hidden">
+                <img id="autoScrollSlowIcon" src="images/sentence-scroll-slow.gif"
+                alt="Animation of sentence scrolling slowly by.">
+            </button>
+            
+            <button id="autoScrollSlow"  class="hidden">
+                <img id="autoScrollFastIcon" src="images/sentence-scroll-med.gif"
+                alt="Animation of sentence scrolling by.">
+            </button>
+            
+            <button id="autoScrollFast" class="hidden">
+                <img id="autoScrollFastIcon" src="images/sentence-scroll-fast.gif"
+                alt="Animation of sentence scrolling by fast.">
+            </button>
+            
+            <button id="autoScrollFastest" class="hidden">
+                <img id="autoSwipeSlowIcon" src="images/sentence-swipe-slow.gif"
+                alt="Animation of scrolling sentence with pointer to indicate slow automatic swipes.">
+            </button>
+            
+            <button id="autoSwipeSlow">
+                <img id="autoSwipeFastIcon" src="images/sentence-swipe-med.gif"
+                alt="Animation of scrolling sentence with pointer to indicate fast automatic swipes.">
+            </button>
+            
+            <button id="autoSwipeFast" class="hidden">
+                <img id="autoSwipeFastestIcon" src="images/sentence-swipe-fast.gif"
+                    alt="Animation of scrolling sentence with pointer to indicate fastest automatic swipes.">
+            </button>
+        </div>
+
+
 
     </div>
     <script src="js/nightMode.js"></script>
     <script src="js/TextScroller.js"></script>
     <script src="js/fontSize.js"></script>
+    <script src="js/settingPanel.js"></script>
 </body>
 
 </html>

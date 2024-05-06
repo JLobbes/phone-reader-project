@@ -16,7 +16,7 @@ body.night-mode {
 }
 
 .text-wrapper {
-    height: 330px;
+    /* Height & Width are defined and manipulated by TextScroller.js */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,7 +46,7 @@ body.night-mode {
 
 .button-panel {
     display: flex;
-    width: 250px;
+    width: 100%;
     flex-direction: row;
     justify-content: center;
     align-items: center;
@@ -54,7 +54,7 @@ body.night-mode {
 }
 
 .button-panel textarea {
-    width: 40%;
+    width: 100px;
     height: 50px;
     margin: 10px;
     padding: 8px;
@@ -103,6 +103,24 @@ body.night-mode {
     transform: translate(-50%, -50%);
     width: 25px;
     height: 25px;
+}
+
+.settings-panel {
+    /* Other styles */
+    opacity: 1; /* Initially hide the panel */
+}
+
+.settings-panel .toggle-button-container.fade-in {
+    animation: fadeIn 0.5s forwards; /* Apply the fadeIn animation to each button */
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0; /* Start with opacity 0 */
+    }
+    to {
+        opacity: 1; /* Transition to opacity 1 */
+    }
 }
 
 .hidden {

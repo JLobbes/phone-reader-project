@@ -25,12 +25,12 @@
             - this.frameRate = 10; // milliseconds
             - this.autoScrollAnimation = '';
 
-        - Med scroll
+        - slow scroll
             - this.scrollSpeed = 1; // pixels per interval
             - this.frameRate = 5; // milliseconds
             - this.autoScrollAnimation = 'transfrom linear';
 
-        - Fast scroll
+        - faster scroll
             - this.scrollSpeed = 1.5; // pixels per interval
             - this.frameRate = 5; // milliseconds
             - this.autoScrollAnimation = 'transfrom linear';

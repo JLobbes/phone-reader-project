@@ -4,17 +4,28 @@ class TextScroller {
         this.scrollerText = document.getElementById('text');
         this.scrollerText.textContent = initialText; 
 
-        this.scrollerBoxWidthNarrowest = 45; // %
-        this.scrollerBoxWidthWider = 70; // %
-        this.scrollerBoxWidthWidest = 95; // %
+        // Widths are defined in %
+        this.scrollerBoxWidthNarrowest = 45; 
+        this.scrollerBoxWidthWider = 70; 
+        this.scrollerBoxWidthWidest = 95; 
+        // Heights are defined in px
+        this.scrollerBoxHeightShortest = 100; 
+        this.scrollerBoxHeightTaller = 250; 
+        this.scrollerBoxHeightTallest = 400; 
         
         this.translate = 0;
         this.isDown = false;
         this.cursorStartX = 0;
         this.offsetDuringDrag = 0;
         this.dragMultiplier = 3;
+        this.dragPresetNone = 1;
+        this.dragPresetDouble = 2;
+        this.dragPresetTriple = 3;
 
         this.keyboardStep = 100;
+        this.stepPresetSmall = 60;
+        this.stepPresetMedium = 100;
+        this.stepPresetLarge = 160;
         this.keyLeft = 'ArrowLeft';
         this.keyRight = 'ArrowRight';
 
@@ -23,7 +34,6 @@ class TextScroller {
         this.frameRate = 1250; // milliseconds
         this.autoScrollAnimation = 'transform 1.250s ease-in-out';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
-
 
         this.addEventListeners();
         this.applySmoothAnimation();
@@ -48,11 +58,33 @@ class TextScroller {
         document.getElementById('makeScrollerBoxNarrow').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthNarrowest));
         document.getElementById('makeScrollerBoxWider').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWider));
         document.getElementById('makeScrollerBoxWidest').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWidest));
+        
+        document.getElementById('makeScrollerBoxShort').addEventListener('click', this.setScrollerBoxHeight.bind(this, this.scrollerBoxHeightShortest));
+        document.getElementById('makeScrollerBoxTaller').addEventListener('click', this.setScrollerBoxHeight.bind(this, this.scrollerBoxHeightTaller));
+        document.getElementById('makeScrollerBoxTallest').addEventListener('click', this.setScrollerBoxHeight.bind(this, this.scrollerBoxHeightTallest));
 
+        document.getElementById('keypressSmall').addEventListener('click', this.setKeyBoardStep.bind(this, this.stepPresetSmall));
+        document.getElementById('keypressMedium').addEventListener('click', this.setKeyBoardStep.bind(this, this.stepPresetMedium));
+        document.getElementById('keypressLarge').addEventListener('click', this.setKeyBoardStep.bind(this, this.stepPresetLarge));
+
+        document.getElementById('dragSpeedSlow').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetNone));
+        document.getElementById('dragSpeedFast').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetDouble));
+        document.getElementById('dragSpeedFastest').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetTriple));
+
+        // document.getElementById('autoSwipeFastest').addEventListener('click'), this.setAutoScrollStyle(this, 500, 1500, 'transform 1.5s ease-in-out');
+        // document.getElementById('autoSwipeFast').addEventListener('click'), this.setAutoScrollStyle(this400, 1250, 'transform 1.250s ease-in-out');
+        // document.getElementById('autoSwipeSlow').addEventListener('click'), this.setAutoScrollStyle(300, 1000, 'transform 1.0s ease-in-out');
+        // document.getElementById('autoScrollFastest').addEventListener('click'), this.setAutoScrollStyle(0.5, 5, 'transform linear');
+        // document.getElementById('autoScrollast').addEventListener('click'), this.setAutoScrollStyle(1, 5, 'transform linear');
+        // document.getElementById('autoScrollSlow').addEventListener('click'), this.setAutoScrollStyle(1.5, 5, 'transform linear');
     }
 
     updatePosition(shift) {
         this.scrollerText.style.transform = `translateX(${shift}px)`;
+    }
+
+    setDragMultiplier(multiplier) {
+        this.dragMultiplier = multiplier;
     }
 
     startDrag(e) {
@@ -107,8 +139,16 @@ class TextScroller {
         this.updatePosition(this.translate);
     }
 
+    setKeyBoardStep(stepSize) {
+        this.keyboardStep = stepSize; // px
+    }
+
     setScrollerBoxWidth(width) {
         this.scrollerBox.style.width = `${width}%`;
+    }
+
+    setScrollerBoxHeight(height) {
+        this.scrollerBox.style.height = `${height}px`;
     }
 
     centerText() {
@@ -124,6 +164,12 @@ class TextScroller {
 
         this.scrollerText.textContent = userTextInput;
         this.centerText();
+    }
+
+    setAutoScrollStyle(scrollSpeed, frameRate, autoScrollAnimation) {
+        this.scrollSpeed = scrollSpeed;
+        this.frameRate = frameRate;
+        this.autoScrollAnimation = autoScrollAnimation;
     }
 
     toggleAutoScroll() {
@@ -197,5 +243,6 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     currentScroller.centerText();
     currentScroller.setScrollerBoxWidth(70);
+    currentScroller.setScrollerBoxHeight(200);
 });
 
