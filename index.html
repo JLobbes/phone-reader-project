@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" href="styles.css">
 
-    <!--  Pull Noto Serif Traditional Chinese font -->
+    <!--  Pull Noto Serif Traditional Chinese font from Web -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
@@ -31,11 +31,17 @@
     </div>
     <div class="text-wrapper">
         <div id="text" class="unselectable">
-            <!-- This is dynamically filled by the TextScroller class being instantiated -->
+            <!-- This is dynamically filled when TextScroller object is instantiated -->
         </div>
     </div>
     <div id="settings" class="button-panel">
-        
+        <!--
+            IMPORTANT NOTE: 
+                Settings has two types of toggle buttons, (1) current-state, and (2) next-state.
+                For current-state buttons, the <img> and <button> elements appear mixed up in
+                the HTML below as the action (show in element id), shows the next state while the 
+                icon shows the current state.
+         -->
         <div>
             <button id="openSettings" class="">
                 <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate settings">
@@ -57,23 +63,41 @@
             </button>
         </div>
         
-        <div class="toggle-button-container hidden" >
-            <button id="decreaseSize">
-                <img id="minusIcon" src="images/minus-icon.png" alt="Minus sign to decrease text size">
+        <div class="toggle-button-container hidden">
+            <!-- See note above regarding next-state buttons -->
+            <button id="makeTextSmaller" class="hidden">
+                <img id="smallestText" src="images/text-icon-smallest.png"
+                    alt="Image of text next to 4 horizontal dashes to indicate text is smallest">
             </button>
-
-            <button id="increaseSize" class="hidden">
-                <img id="addIcon" src="images/add-icon.png" alt="Plus sign to increase text size">
+        
+            <button id="makeTextMedium" class="hidden">
+                <img id="smallerText" src="images/text-icon-smaller.png"
+                    alt="Image of text next to 3 horizontal dashes to indicate text is smallest">
+            </button>
+        
+            <button id="makeTextLarger">
+                <img id="mediumText" src="images/text-icon-med.png"
+                    alt="Image of text next to 2 horizontal dashes to indicate text is medium sized">
+            </button>
+        
+            <button id="makeTextLargest" class="hidden">
+                <img id="largestText" src="images/text-icon-large.png"
+                    alt="Image of text next to 1 horizontal dash to indicate text is larger">
+            </button>
+        
+            <button id="makeTextSmallest" class="hidden">
+                <img id="largestText" src="images/text-icon-largest.png"
+                    alt="Image of text next taking up all available space to indicate text is largest">
             </button>
         </div>
 
-
         <div class="toggle-button-container hidden" >
+            <!-- See note above regarding next-state buttons -->
             <button id="makeScrollerBoxWider" class="hidden">
                 <img id="narrowestScrollerBoxIcon" src="images/narrowest-icon.png"
                     alt="Doubleheaded arrow between vertical lines to indicate narrowest scrollbox setting.">
             </button>
-
+            
             <button id="makeScrollerBoxWidest">
                 <img id="widerScrollerBoxIcon" src="images/wider-icon.png"
                     alt="Doubleheaded arrow between vertical lines to indicate wider scrollbox setting.">
@@ -84,8 +108,9 @@
                     alt="Doubleheaded arrow between vertical lines to indicate widest scrollbox setting.">
             </button>
         </div>
-
+            
         <div class="toggle-button-container hidden">
+            <!-- See note above regarding next-state buttons -->
             <button id="makeScrollerBoxTaller" class="hidden">
                 <img id="shortScrollerBoxIcon" src="images/shortest-icon.png"
                     alt="Doubleheaded arrow between horizontal lines to indicate shortest scrollbox setting.">
@@ -103,6 +128,7 @@
         </div>
 
         <div class="toggle-button-container hidden" >
+            <!-- See note above regarding next-state buttons -->
             <button id="keypressMedium" class="hidden"> 
                 <img id="keypressSmallIcon" src="images/keypress-icon.png"
                     alt="Arrow left to indicate key stroke moves text less.">
@@ -120,6 +146,7 @@
         </div>
 
         <div class="toggle-button-container hidden">
+            <!-- See note above regarding next-state buttons -->
             <button id="dragSpeedFast" class="hidden">
                 <img id="slowPointerIcon" src="images/pointer-icon-single.png"
                     alt="Gear icon to indicate open settings">
@@ -135,6 +162,7 @@
         </div>
 
         <div class="toggle-button-container hidden" >
+            <!-- See note above regarding next-state buttons -->
             <button id="autoSwipeFastest" class="hidden">
                 <img id="autoScrollSlowIcon" src="images/sentence-scroll-slow.gif"
                 alt="Animation of sentence scrolling slowly by.">
@@ -165,13 +193,9 @@
                     alt="Animation of scrolling sentence with pointer to indicate fastest automatic swipes.">
             </button>
         </div>
-
-
-
     </div>
     <script src="js/nightMode.js"></script>
     <script src="js/TextScroller.js"></script>
-    <script src="js/fontSize.js"></script>
     <script src="js/settingPanel.js"></script>
 </body>
 
