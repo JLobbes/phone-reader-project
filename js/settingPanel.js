@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // TO-DO: put in function
         const toggleButtonContainers = document.querySelectorAll('.toggle-button-container');
         toggleButtonContainers.forEach(function(container) {
-            toggleHiddenClass(container); 
+            toggleHiddenSettingVisibility(container); 
             const buttons = container.querySelectorAll('button');
             buttons.forEach(function(button, index) {
                 button.addEventListener('click', function() {
@@ -32,6 +32,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function toggleHiddenClass(element) {
         element.classList.toggle('hidden');
+    }
+
+    function toggleHiddenSettingVisibility(element) {
+        element.classList.toggle('visible');
     }
 
 

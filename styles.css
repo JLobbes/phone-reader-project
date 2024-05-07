@@ -55,8 +55,8 @@ body.night-mode {
 .button-panel textarea {
     width: 100px;
     height: 50px;
-    margin: 10px;
-    padding: 8px;
+    margin: 5px 2.5px 5px 2.5px;
+    padding: 5px;
     box-sizing: border-box;
     font-size: 16px;
     border: 1px solid #ccc;
@@ -75,7 +75,7 @@ body.night-mode {
 .button-panel button {
     touch-action: manipulation;
     position: relative;
-    margin: 5px 2.5px 0px 2.5px;
+    margin: 5px 2.5px 5px 2.5px;
     width: 50px;
     height: 50px;
     box-sizing: border-box;
@@ -113,6 +113,14 @@ body.night-mode {
     animation: fadeIn 0.5s forwards; /* Apply the fadeIn animation to each button */
 }
 
+#settingsDivider {
+    height: 50px;
+    width: 0;
+    margin: 0px 5px 0px 5px;
+    border: #eee solid 1.5px;
+    mask-image: linear-gradient(to top, transparent 5%,  black 50%, transparent 95%);
+}
+
 @keyframes fadeIn {
     from {
         opacity: 0; /* Start with opacity 0 */
@@ -124,6 +132,20 @@ body.night-mode {
 
 .hidden {
     display: none;
+}
+
+.hidden-setting {
+    visibility: hidden;
+    opacity: 0;
+    width: 0px;
+    transition: width 0.5s, visibility 0.5s, opacity 0.5s;
+}
+
+.hidden-setting.visible {
+    visibility: visible;
+    opacity: 1;
+    width: 55px;
+    transition: width 0.5s, visibility 0.5s, opacity 0.5s;
 }
 
 .unselectable {

@@ -272,8 +272,8 @@ document.addEventListener('DOMContentLoaded', () => {
         `
     );
     currentScroller.centerText();
-    currentScroller.setScrollerBoxWidth(70);
-    currentScroller.setScrollerBoxHeight(200);
+    currentScroller.setScrollerBoxWidth(95);
+    currentScroller.setScrollerBoxHeight(250);
     currentScroller.setFontSize(40);
 });
 
