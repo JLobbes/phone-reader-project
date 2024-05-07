@@ -38,11 +38,11 @@ class TextScroller {
         this.autoScrollInterval = null;
         this.scrollSpeed = 400; // pixels per interval
         this.frameRate = 1250; // milliseconds
-        this.autoScrollAnimation = 'transform 1.250s ease-in-out';
+        this.autoScrollTransition = 'transform 1.250s ease-in-out';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
 
         this.addEventListeners();
-        this.applySmoothAnimation();
+        this.applySmoothTransition();
     }
 
     addEventListeners() {
@@ -83,13 +83,12 @@ class TextScroller {
         document.getElementById('dragSpeedFast').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetDouble));
         document.getElementById('dragSpeedFastest').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetTriple));
 
-
-        // document.getElementById('autoSwipeFastest').addEventListener('click'), this.setAutoScrollStyle(this, 500, 1500, 'transform 1.5s ease-in-out');
-        // document.getElementById('autoSwipeFast').addEventListener('click'), this.setAutoScrollStyle(this400, 1250, 'transform 1.250s ease-in-out');
-        // document.getElementById('autoSwipeSlow').addEventListener('click'), this.setAutoScrollStyle(300, 1000, 'transform 1.0s ease-in-out');
-        // document.getElementById('autoScrollFastest').addEventListener('click'), this.setAutoScrollStyle(0.5, 5, 'transform linear');
-        // document.getElementById('autoScrollast').addEventListener('click'), this.setAutoScrollStyle(1, 5, 'transform linear');
-        // document.getElementById('autoScrollSlow').addEventListener('click'), this.setAutoScrollStyle(1.5, 5, 'transform linear');
+        document.getElementById('autoSwipeFastest').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 600, frameRate: 1500, autoScrollTransition: 'transform 1.5s ease-in-out' }));
+        document.getElementById('autoSwipeFast').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 400, frameRate: 1250, autoScrollTransition: 'transform 1.5s ease-in-out' }));
+        document.getElementById('autoSwipeSlow').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 200, frameRate: 1000, autoScrollTransition: 'transform 1.0s ease-in-out' }));
+        document.getElementById('autoScrollSlow').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 0.5, frameRate: 5, autoScrollTransition: 'transform linear' }));
+        document.getElementById('autoScrollFast').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 1, frameRate: 5, autoScrollTransition: 'transform linear' }));
+        document.getElementById('autoScrollFastest').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 1.5, frameRate: 5, autoScrollTransition: 'transform linear' }));
     }
 
     updatePosition(shift) {
@@ -108,7 +107,7 @@ class TextScroller {
         }
         this.isDown = true;
         this.cursorStartX = ((e.pageX || e.touches[0].pageX) * this.dragMultiplier) - this.scrollerText.offsetLeft;
-        this.removeSmoothAnimation();
+        this.removeSmoothTransition();
     }
 
     doDrag(e) {
@@ -128,19 +127,37 @@ class TextScroller {
         this.isDown = false;
         this.translate += this.offsetDuringDrag;
         this.offsetDuringDrag = 0;
-        this.applySmoothAnimation();
+        this.applySmoothTransition();
     }
 
-    applySmoothAnimation() {
+    applySmoothTransition() {
         this.scrollerText.style.transition = 'transform 0.4s ease-out';
     }
 
-    removeSmoothAnimation() {
+    removeSmoothTransition() {
         this.scrollerText.style.transition = '';
     }
 
-    applyAutoScrollAnimation() {
-        this.scrollerText.style.transition = this.autoScrollAnimation;
+    applyAutoScrollTransition() {
+        this.scrollerText.style.transition = this.autoScrollTransition;
+    }
+
+    setAutoScrollConfiguration(autoScrollConfiguration) {
+        this.scrollSpeed = autoScrollConfiguration.scrollSpeed;
+        this.frameRate = autoScrollConfiguration.frameRate;
+        this.autoScrollTransition = autoScrollConfiguration.autoScrollTransition;
+
+        // To-Do: Encapsulate and move the following transition flush and reset 
+        if(this.autoScrollInterval) {
+            this.stopAutoScroll();
+            this.applyAutoScrollTransition();
+            this.startAutoScroll()
+            
+        } else {
+            this.stopAutoScroll(); // In order to clear interval
+            this.applyAutoScrollTransition();
+
+        }
     }
 
     keyboardControl(e) {
@@ -183,11 +200,7 @@ class TextScroller {
         this.centerText();
     }
 
-    setAutoScrollStyle(scrollSpeed, frameRate, autoScrollAnimation) {
-        this.scrollSpeed = scrollSpeed;
-        this.frameRate = frameRate;
-        this.autoScrollAnimation = autoScrollAnimation;
-    }
+
 
     toggleAutoScroll() {
         if (this.autoScrollInterval) {
@@ -200,8 +213,8 @@ class TextScroller {
     startAutoScroll() {
         this.autoScrollInterval = setInterval(() => {
             this.translate -= this.scrollSpeed; 
-            this.removeSmoothAnimation();
-            this.applyAutoScrollAnimation();
+            this.removeSmoothTransition();
+            this.applyAutoScrollTransition();
             this.updatePosition(this.translate);
         }, this.frameRate); // frameRate is not FPS, but ms between animation
         this.toggleAutoScrollIcons('stopIcon');
