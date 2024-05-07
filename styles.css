@@ -17,6 +17,7 @@ body.night-mode {
 
 .text-wrapper {
     /* height & width are defined and manipulated by TextScroller.js */
+    margin: 5px 0px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -77,7 +78,7 @@ body.night-mode {
 .button-panel button {
     touch-action: manipulation;
     position: relative;
-    margin: 10px 2.5px 10px 2.5px;
+    margin: 2.5px;
     width: 50px;
     height: 50px;
     box-sizing: border-box;
