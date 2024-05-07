@@ -2,16 +2,35 @@ document.addEventListener('DOMContentLoaded', function() {
 
     const openSettingsButton = document.getElementById('openSettings');
     openSettingsButton.addEventListener('click', function() {
-        toggleSettingsList();
+        toggleSettingsView();
     });
 
     const closeSettingsButton = document.getElementById('closeSettings'); 
     closeSettingsButton.addEventListener('click', function() {
-        toggleSettingsList();
+        toggleSettingsView();
+
+        const toggleButtonContainers = document.querySelectorAll('.toggle-button-container');
+
+        // Get index of #settingsDividerContainer
+        const divider = document.getElementById('settingsDividerContainer');
+        const dividerIndex = Array.from(toggleButtonContainers).indexOf(divider);
+        
+        // Add hidden-setting class to containers left of divider
+        toggleButtonContainers.forEach(function(buttonContainer) {
+            removeHiddenSettingClass(buttonContainer);
+            const containerIndex = Array.from(toggleButtonContainers).indexOf(buttonContainer);
+            console.log(containerIndex);
+            console.log(dividerIndex);
+            if(containerIndex >= dividerIndex) {
+                console.log('here');
+                reApplyHiddenSettingsClass(buttonContainer);
+            }
+        });
+
     });
 
 
-    function toggleSettingsList() {
+    function toggleSettingsView() {
         // Toggle gear icon animation
         toggleHiddenClass(openSettingsButton);
         toggleHiddenClass(closeSettingsButton);
@@ -28,6 +47,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 });
             });
         });
+    }
+
+    function reApplyHiddenSettingsClass(element) {
+        element.classList.add('hidden-setting');
+    }
+
+    function removeHiddenSettingClass(element) {
+        element.classList.remove('hidden-setting');
     }
 
     function toggleHiddenClass(element) {
@@ -48,5 +75,47 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const nextIndex = (index + 1) % buttons.length;
         buttons[nextIndex].classList.remove('hidden');
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const toggleButtonContainers = document.querySelectorAll('.toggle-button-container');
+
+    toggleButtonContainers.forEach(function(container) {
+        container.addEventListener('dragstart', handleDragStart);
+        container.addEventListener('dragover', handleDragOver);
+        container.addEventListener('drop', handleDrop);
+        container.addEventListener('dragend', handleDragEnd);
+    });
+
+    let draggedItem = null;
+
+    function handleDragStart(event) {
+        draggedItem = this;
+        this.style.opacity = '0.4'; // Reduce opacity of dragged item
+        event.dataTransfer.setData('text/plain', ''); // Needed for Firefox
+    }
+
+    function handleDragOver(event) {
+        event.preventDefault();
+    }
+
+    function handleDrop(event) {
+        event.preventDefault();
+        if (draggedItem !== this) {
+            const containerIndex = Array.from(toggleButtonContainers).indexOf(draggedItem);
+            const droppedIndex = Array.from(toggleButtonContainers).indexOf(this);
+            const parent = this.parentNode;
+            if (droppedIndex < containerIndex) {
+                parent.insertBefore(draggedItem, this);
+            } else {
+                parent.insertBefore(draggedItem, this.nextSibling);
+            }
+        }
+    }
+
+    function handleDragEnd(event) {
+        draggedItem.style.opacity = ''; // Restore opacity
+        draggedItem = null;
     }
 });

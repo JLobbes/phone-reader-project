@@ -60,3 +60,4 @@
 - Add option for RSVP
 - Add word search
 - Add word/text tracker 
+- Solve drag and drop compatibility for FireFox

@@ -23,7 +23,9 @@
             <img src="images/curving-arrow-icon.png" alt="Text reading 'Go' to indicate put text on reader.">
         </button>
 
-        <div id="settingsDivider"></div>
+        <div style="width: 20px;">
+            <div class="settings-divider"></div>
+        </div>
 
         <button id="playButton">
             <img id="playIcon" src="images/play-icon.png" alt="Play icon to start auto-scroll">
@@ -32,11 +34,13 @@
                 alt="Pause icon to show auto-scroll is paused">
         </button>
     </div>
+
     <div class="text-wrapper">
         <div id="text" class="unselectable">
             <!-- This is dynamically filled when TextScroller object is instantiated -->
         </div>
     </div>
+
     <div id="settings" class="button-panel">
         <!--
             IMPORTANT NOTE: 
@@ -46,7 +50,7 @@
                 icon shows the current state.
          -->
         <div>
-            <button id="openSettings" class="">
+            <button id="openSettings" >
                 <img id="settingsIcon" src="images/setting-gear-icon.png" alt="Gear icon to indicate settings">
             </button>
             <button id="closeSettings" class="hidden">
@@ -55,9 +59,14 @@
             </button>
         </div>
 
-        <div id="settingsDivider" class="toggle-button-container hidden-setting"></div>
+        <!-- The divider has inline styles to overide the toggle-button-container class -->
+        <div id="settingsDividerContainer" class="toggle-button-container hidden-setting" draggable="true"
+            style="width: 20px; cursor: pointer; background-color: transparent;" 
+            >
+            <div class="settings-divider"></div>
+        </div>
 
-        <div class="toggle-button-container hidden-setting">
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <button class="toggle-night-mode">
                 <img id="nightModeIcon" src="images/night-mode-icon.png"
                     alt="Image of moon and stars to indicate night mode">
@@ -68,7 +77,7 @@
             </button>
         </div>
         
-        <div class="toggle-button-container hidden-setting">
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <!-- See note above regarding next-state buttons -->
             <button id="makeTextSmaller" class="hidden">
                 <img id="smallestText" src="images/text-icon-smallest.png"
@@ -96,25 +105,25 @@
             </button>
         </div>
 
-        <div class="toggle-button-container hidden-setting" >
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <!-- See note above regarding next-state buttons -->
             <button id="makeScrollerBoxWider" class="hidden">
                 <img id="narrowestScrollerBoxIcon" src="images/narrowest-icon.png"
                     alt="Doubleheaded arrow between vertical lines to indicate narrowest scrollbox setting.">
             </button>
             
-            <button id="makeScrollerBoxWidest">
+            <button id="makeScrollerBoxWidest" class="hidden">
                 <img id="widerScrollerBoxIcon" src="images/wider-icon.png"
                     alt="Doubleheaded arrow between vertical lines to indicate wider scrollbox setting.">
             </button>
 
-            <button id="makeScrollerBoxNarrow" class="hidden">
+            <button id="makeScrollerBoxNarrow">
                 <img id="widestScrollerBoxIcon" src="images/widest-icon.png"
                     alt="Doubleheaded arrow between vertical lines to indicate widest scrollbox setting.">
             </button>
         </div>
             
-        <div class="toggle-button-container hidden-setting">
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <!-- See note above regarding next-state buttons -->
             <button id="makeScrollerBoxTaller" class="hidden">
                 <img id="shortScrollerBoxIcon" src="images/shortest-icon.png"
@@ -132,7 +141,7 @@
             </button>
         </div>
 
-        <div class="toggle-button-container hidden-setting" >
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <!-- See note above regarding next-state buttons -->
             <button id="keypressMedium" class="hidden"> 
                 <img id="keypressSmallIcon" src="images/keypress-icon.png"
@@ -150,7 +159,7 @@
             </button>
         </div>
 
-        <div class="toggle-button-container hidden-setting">
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <!-- See note above regarding next-state buttons -->
             <button id="dragSpeedFast" class="hidden">
                 <img id="slowPointerIcon" src="images/pointer-icon-single.png"
@@ -166,7 +175,7 @@
             </button>
         </div>
 
-        <div class="toggle-button-container hidden-setting" >
+        <div class="toggle-button-container hidden-setting" draggable="true">
             <!-- See note above regarding next-state buttons -->
 
             <button id="autoScrollFast" class="hidden">
