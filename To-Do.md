@@ -62,6 +62,7 @@
 - Add word/text tracker 
 - Solve drag and drop compatibility for FireFox
 - Make click and drag more predictable
-- Ensure icons are not selectable 
+- ✔ Ensure icons are not selectable 
 - Implement cover paste-text textarea button (it's ugly)
-- Enable mapping of text in text box
+- ✔ Enable mapping of text in text box
+- Solve initial delayed centering issue.

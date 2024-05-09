@@ -182,12 +182,11 @@ class TextScroller {
         };
     }
     
-
     updatePosition(shift) {
         this.scrollerText.style.transform = `translateX(${shift}px)`;
-        this.setVisibleWords();
-        console.log(this.visibleWords);
-        this.printPositionalStats();
+        // this.setVisibleWords();
+        // console.log(this.visibleWords);
+        // this.printPositionalStats();
     }
 
     printPositionalStats() {
@@ -357,6 +356,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Delay to ensure DOM is loaded on first iteration
     setTimeout(() => {
         currentScroller.setScrollerText();
-    }, 2000 ); // 1s delay
+    }, 500 ); // 0.5s delay
 });
 

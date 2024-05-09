@@ -10,6 +10,16 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
+@media (max-width: 600px) {
+    body, html {
+        height: 105%;
+    }
+
+    html::-webkit-scrollbar {
+        width: 0px;
+    }
+}
+
 body.night-mode {
     background: #111;
     color: #fff;
