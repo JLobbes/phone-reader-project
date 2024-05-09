@@ -1,8 +1,24 @@
+class Word {
+    constructor(text, width) {
+        this.text = text;
+        this.width = width;
+    }
+}
+
 class TextScroller {
-    constructor(initialText) {
+    constructor() {
         this.scrollerBox = document.getElementsByClassName('text-wrapper')[0];
         this.scrollerText = document.getElementById('text');
-        this.scrollerText.textContent = initialText; 
+        // this.scrollerText.textContent = initialText; 
+
+        this.scrollerBoxCenter;
+        this.scrollerTextLeft;
+        this.lengthOffCenter;
+
+        this.words = [];
+        this.setScrollerText();
+        this.wordPositionalMap;
+        this.visibleWords;
 
         // Widths are defined in %
         this.scrollerBoxWidthNarrowest = 45; 
@@ -59,7 +75,8 @@ class TextScroller {
 
         // Button listeners
         document.getElementById('playButton').addEventListener('click', this.toggleAutoScroll.bind(this));
-        document.getElementById('goButton').addEventListener('click', this.setText.bind(this));
+        // document.getElementById('goButton').addEventListener('click', this.setText.bind(this));
+        document.getElementById('goButton').addEventListener('click', this.setScrollerText.bind(this));
 
         document.getElementById('makeScrollerBoxNarrow').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthNarrowest));
         document.getElementById('makeScrollerBoxWider').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWider));
@@ -91,8 +108,94 @@ class TextScroller {
         document.getElementById('autoScrollFastest').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 1.5, frameRate: 5, autoScrollTransition: 'transform linear' }));
     }
 
+    setScrollerText() {
+        const userTextBox = document.getElementById('textInput');
+        const userTextInput = userTextBox.value ? userTextBox.value : `The quick brown frox jumped over the fat turtle.`;
+        if (userTextBox) userTextBox.value = ''; // Clear the user-input textarea
+    
+        // Split the text into an array of words (including spaces)
+        const rawWords = userTextInput.match(/\S+|\s+/g) || [];
+    
+        // Create the words array without calculating widths
+        this.words = rawWords.map((word) => new Word(word, 0));
+
+        // Wrap each word in a span element and add it to the scrollerText
+        this.scrollerText.innerHTML = this.words
+            .map((wordObj, index) => `<span class="word" id="word-${index}">${wordObj.text}</span>`)
+            .join('');
+    
+            
+        // Delay to ensure DOM is loaded on first iteration
+        setTimeout(() => {
+            this.centerText();
+            this.wordPositionalMap = this.getWordPositionMap();
+        }, 50); // 50 ms delay
+    }
+    
+    // Measure the widths of the words and update the positions
+    getWordPositionMap() {
+        let position = 0;
+
+        return this.words.map((wordObj, index) => {
+            // Get the current span from the DOM
+            const wordElement = document.getElementById(`word-${index}`);
+
+            // Measure the width of the word using getBoundingClientRect
+            const wordRect = wordElement.getBoundingClientRect();
+            const wordWidth = wordRect.width;
+
+            // Update the width property in the word object
+            wordObj.width = wordWidth;
+
+            // Create word data object with position
+            const wordData = {
+                text: wordObj.text,
+                width: wordObj.width,
+                position
+            };
+
+            // Update the position for the next word
+            position += wordWidth;
+
+            return wordData;
+        });
+    };
+    
+    setVisibleWords() {
+        const visibleWords = [];
+    
+        const leftBoundary = Math.abs(this.lengthOffCenter) - 300; // The left boundary in the scrollerBox
+        const rightBoundary = Math.abs(this.lengthOffCenter) + 300; // The right boundary
+    
+        const wordPositions = this.getWordPositionMap(); // Retrieve words with their positions
+    
+        for (const word of wordPositions) {
+            if (word.position + word.width > leftBoundary && word.position < rightBoundary) {
+                visibleWords.push(word.text.trim());
+            }
+        }
+    
+        this.visibleWords = visibleWords;
+
+        return {
+            visibleWords
+        };
+    }
+    
+
     updatePosition(shift) {
         this.scrollerText.style.transform = `translateX(${shift}px)`;
+        this.setVisibleWords();
+        console.log(this.visibleWords);
+        this.printPositionalStats();
+    }
+
+    printPositionalStats() {
+        // Delay center text to ensure dom is loaded on first iteration
+        setTimeout(() => {
+            this.getLengthOffCenter();
+            // console.log("this.lengthOffCenter:", this.lengthOffCenter);
+        }, 500); // 500 ms delay to allow animation to complete
     }
 
     setDragMultiplier(multiplier) {
@@ -163,10 +266,11 @@ class TextScroller {
     keyboardControl(e) {
         if (e.key === this.keyLeft) {
             this.translate -= this.keyboardStep;
+            this.updatePosition(this.translate);
         } else if (e.key === this.keyRight) {
             this.translate += this.keyboardStep;
+            this.updatePosition(this.translate);
         }
-        this.updatePosition(this.translate);
     }
 
     setKeyBoardStep(stepSize) {
@@ -185,22 +289,23 @@ class TextScroller {
         this.scrollerText.style.fontSize = `${fontSize}px`;
     }
 
+    getLengthOffCenter() {
+        this.scrollerTextLeft = this.scrollerText.getBoundingClientRect().left;
+        this.scrollerBoxCenter = this.scrollerBox.getBoundingClientRect().left + (this.scrollerBox.getBoundingClientRect().width / 2);
+        
+        this.lengthOffCenter = this.scrollerTextLeft - this.scrollerBoxCenter ;
+        return this.lengthOffCenter;
+    }
+
     centerText() {
-        const correctionMeasure = this.scrollerText.offsetWidth / 2;
-        this.translate = correctionMeasure;
+        this.getLengthOffCenter(); // Update values of scrollerBoxCenter & scrollerTextLeft for accurate measurent.
+        const centeringAdjustment = this.scrollerBoxCenter - this.scrollerTextLeft;
+    
+        // Update the translate property
+        this.translate += centeringAdjustment;
         this.updatePosition(this.translate);
     }
-
-    setText() {
-        const userTextBox = document.getElementById('textInput');
-        const userTextInput = userTextBox.value;
-        userTextBox.value = ''; // Clear the user-input textarea
-
-        this.scrollerText.textContent = userTextInput;
-        this.centerText();
-    }
-
-
+    
 
     toggleAutoScroll() {
         if (this.autoScrollInterval) {
@@ -244,36 +349,14 @@ class TextScroller {
 
 // Usage
 document.addEventListener('DOMContentLoaded', () => {
-    const currentScroller = new TextScroller(
-        `
-        In the heart of Ethiopia lies an extraordinary geological marvel—the 
-        Danakil Depression, one of the hottest and most alien landscapes on Earth. 
-        This cauldron-like depression is part of the Afar Triangle, a junction of 
-        three tectonic plates, which are pulling apart from each other, creating 
-        new land as magma surfaces. Here, temperatures can soar above 120°F, and 
-        the air shimmers above vast salt flats and hydrothermal fields.
-
-        The Danakil Depression offers a glimpse into Earth’s inner workings, 
-        featuring dazzling formations like Dallol. Dallol holds the record for the
-         highest average temperatures for an inhabited location on Earth and 
-         showcases bright yellow sulfur fields, green acid pools, and iron-rich 
-         red waters. These psychedelic landscapes are not just a draw for intrepid 
-         tourists; they are invaluable to scientists studying extremophile microbes 
-         thriving in such harsh conditions. These studies provide clues about life's 
-         adaptability and even implications for extraterrestrial life, suggesting that 
-         life could potentially exist in similar environments on other planets.
-
-         Amidst this severe environment, the Afar people have adapted to extract 
-         precious salt, continuing a centuries-old tradition. Caravans of camels 
-         and donkeys, led by the Afar, trek across the desert, harvesting salt from 
-         the ground, cut into slabs, and transported to markets across Ethiopia. 
-         This blend of extreme natural phenomena and human endurance paints a vivid 
-         picture of life's tenacity and the dynamic forces shaping our planet.    
-        `
-    );
-    currentScroller.centerText();
+    const currentScroller = new TextScroller();
     currentScroller.setScrollerBoxWidth(95);
     currentScroller.setScrollerBoxHeight(250);
     currentScroller.setFontSize(40);
+    
+    // Delay to ensure DOM is loaded on first iteration
+    setTimeout(() => {
+        currentScroller.setScrollerText();
+    }, 2000 ); // 1s delay
 });
 

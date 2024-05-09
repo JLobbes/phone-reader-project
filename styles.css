@@ -34,12 +34,10 @@ body.night-mode {
 #text {
     white-space: nowrap;
     position: absolute;
-    will-change: transform;
     cursor: pointer;
     padding: 0; 
     font-family: "Noto Serif TC", serif;
     /* font-size is defined and manpulated by TextScroller.js   */
-
 }
 
 #text.night-mode {
