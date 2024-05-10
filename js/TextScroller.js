@@ -9,14 +9,13 @@ class TextScroller {
     constructor() {
         this.scrollerBox = document.getElementsByClassName('text-wrapper')[0];
         this.scrollerText = document.getElementById('text');
-        // this.scrollerText.textContent = initialText; 
+        this.intialText;
 
         this.scrollerBoxCenter;
         this.scrollerTextLeft;
         this.lengthOffCenter;
 
         this.words = [];
-        this.setScrollerText();
         this.wordPositionalMap;
         this.visibleWords;
 
@@ -52,9 +51,9 @@ class TextScroller {
         this.keyRight = 'ArrowRight';
 
         this.autoScrollInterval = null;
-        this.scrollSpeed = 400; // pixels per interval
-        this.frameRate = 1250; // milliseconds
-        this.autoScrollTransition = 'transform 1.250s ease-in-out';
+        this.scrollSpeed = 1; // pixels per interval
+        this.frameRate = 5; // milliseconds
+        this.autoScrollTransition = 'transform 1.250s linear';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
 
         this.addEventListeners();
@@ -108,21 +107,30 @@ class TextScroller {
         document.getElementById('autoScrollFastest').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 1.5, frameRate: 5, autoScrollTransition: 'transform linear' }));
     }
 
+    setInitialText(text) {
+        this.intialText = text;
+    }
+
     setScrollerText() {
         const userTextBox = document.getElementById('textInput');
-        const userTextInput = userTextBox.value ? userTextBox.value : `The quick brown frox jumped over the fat turtle.`;
+        const userTextInput = userTextBox.value ? userTextBox.value : this.intialText;
         if (userTextBox) userTextBox.value = ''; // Clear the user-input textarea
-    
-        // Split the text into an array of words (including spaces)
-        const rawWords = userTextInput.match(/\S+|\s+/g) || [];
-    
-        // Create the words array without calculating widths
-        this.words = rawWords.map((word) => new Word(word, 0));
+        console.log('here')
 
-        // Wrap each word in a span element and add it to the scrollerText
-        this.scrollerText.innerHTML = this.words
-            .map((wordObj, index) => `<span class="word" id="word-${index}">${wordObj.text}</span>`)
-            .join('');
+        this.scrollerText.textContent = userTextInput;
+        toggleInputTextarea(); // Global function        
+
+        // Below logic is breaking text into span for measurment, increased number of empty spans causes lag.
+            // // Split the text into an array of words (including spaces)
+            // const rawWords = userTextInput.match(/\S+|\s+/g) || [];
+        
+            // // Create the words array without calculating widths
+            // this.words = rawWords.map((word) => new Word(word, 0));
+
+            // // Wrap each word in a span element and add it to the scrollerText
+            // this.scrollerText.innerHTML = this.words
+            //     .map((wordObj, index) => `<span class="word" id="word-${index}">${wordObj.text}</span>`)
+            //     .join('');
     
             
         // Delay to ensure DOM is loaded on first iteration
@@ -352,10 +360,32 @@ document.addEventListener('DOMContentLoaded', () => {
     currentScroller.setScrollerBoxWidth(95);
     currentScroller.setScrollerBoxHeight(250);
     currentScroller.setFontSize(40);
-    
-    // Delay to ensure DOM is loaded on first iteration
+    currentScroller.setInitialText(
+        `
+        Hi, I'm made this tool to help me read. Maybe it will help you as well.
+        
+        Press the stop button above (↑↑↑↑) to stop auto-scroll or just tap the screen to pause.
+
+        To paste your text here, press the paste icon above and paste into the box. 
+        Then jam the curved arrow.
+
+        Swipe left or right to scroll through the text. You can click with a mouse or punch 
+        arrow keys on the keyboard as well. 
+        
+        Below, you can press the settings button to change scroll speed, fontSize and more.
+
+        When you change settings, they are saved on your browser's local storage. 
+        No data is transmitted or stored anywhere else on the web.
+        If you clear your browser history, your settings will be cleared too. 
+
+        Scroll back to back to the beginning or press refresh to read this again.
+        
+        If you have any feedback, please do reach out. Happy reading!
+        `
+    );
+    currentScroller.setScrollerText();
     setTimeout(() => {
-        currentScroller.setScrollerText();
-    }, 500 ); // 0.5s delay
+        currentScroller.startAutoScroll();
+    }, 1000); // 1s delay
 });
 

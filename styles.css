@@ -10,16 +10,6 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
-@media (max-width: 600px) {
-    body, html {
-        height: 105%;
-    }
-
-    html::-webkit-scrollbar {
-        width: 0px;
-    }
-}
-
 body.night-mode {
     background: #111;
     color: #fff;
@@ -64,14 +54,20 @@ body.night-mode {
 }
 
 .button-panel textarea {
-    width: 100px;
+    width: 0;
     height: 50px;
-    margin: 5px 2.5px 5px 2.5px;
-    padding: 5px;
+    margin: 0;
+    padding: 0px;
     box-sizing: border-box;
     font-size: 16px;
     border: 1px solid #ccc;
     border-radius: 4px;
+}
+
+.button-panel textarea.visible {
+    width: 75px;
+    padding: 5px;
+    margin: 5px 2.5px 5px 2.5px;
 }
 
 .button-panel textarea.night-mode {

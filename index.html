@@ -17,7 +17,11 @@
 
 <body>
     <div class="button-panel">
-        <textarea id="textInput" placeholder="Paste here.."></textarea>
+        <button id="pasteText" class="hidden-setting">
+            <img src="images/paste-icon.png" class="unselectable"
+            alt="Paste page icon to indicate open paste text textarea.">
+        </button>
+        <textarea id="textInput" class="hidden-setting visible" placeholder="Paste here.."></textarea>
 
         <button id="goButton">
             <img src="images/curving-arrow-icon.png" class="unselectable"
@@ -217,6 +221,7 @@
     <script src="js/TextScroller.js"></script>
     <script src="js/settingPanel.js"></script>
     <script src="js/UserSetting.js"></script>
+    <script src="js/pasteText.js"></script>
 </body>
 
 </html>
