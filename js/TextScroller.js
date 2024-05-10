@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentScroller.setFontSize(40);
     currentScroller.setInitialText(
         `
-        Hi, I'm made this tool to help me read. Maybe it will help you as well.
+        Hi, I made this tool to help me read. Maybe it will help you as well.
         
         Press the stop button above (↑↑↑↑) to stop auto-scroll or just tap the screen to pause.
 

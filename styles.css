@@ -54,7 +54,7 @@ body.night-mode {
 }
 
 .button-panel textarea {
-    width: 0;
+    width: 0px;
     height: 50px;
     margin: 0;
     padding: 0px;
@@ -113,6 +113,15 @@ body.night-mode {
 
 .hidden {
     display: none;
+}
+
+#pasteText.hidden-setting.visible {
+    width: 50px;
+    padding: 5px;
+}
+#pasteText.hidden-setting {
+    width: 0px;
+    padding: 0px;
 }
 
 .hidden-setting {
