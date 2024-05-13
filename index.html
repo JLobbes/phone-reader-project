@@ -17,6 +17,21 @@
 
 <body>
     <div class="button-panel">
+        <button id="centerButton">
+            <p style="color: #eee;">C</p>
+            <!-- <img id="center" class="unselectable" src="" alt="Center"> -->
+        </button>
+        <button id="playButton">
+            <img id="playIcon" class="unselectable" src="images/play-icon.png" alt="Play icon to start auto-scroll">
+            <img id="stopIcon" class="hidden unselectable" src="images/stop-icon.png" alt="Stop icon to stop auto-scroll">
+            <img id="pauseIcon" class="hidden unselectable" src="images/pause-icon.png"
+            alt="Pause icon to show auto-scroll is paused">
+        </button>
+
+        <div style="width: 20px;">
+            <div class="settings-divider"></div>
+        </div>
+
         <button id="pasteText" class="hidden-setting">
             <img src="images/paste-icon.png" class="unselectable"
             alt="Paste page icon to indicate open paste text textarea.">
@@ -27,22 +42,17 @@
             <img src="images/curving-arrow-icon.png" class="unselectable"
             alt="Text reading 'Go' to indicate put text on reader.">
         </button>
-
-        <div style="width: 20px;">
-            <div class="settings-divider"></div>
-        </div>
-
-        <button id="playButton">
-            <img id="playIcon" class="unselectable" src="images/play-icon.png" alt="Play icon to start auto-scroll">
-            <img id="stopIcon" class="hidden unselectable" src="images/stop-icon.png" alt="Stop icon to stop auto-scroll">
-            <img id="pauseIcon" class="hidden unselectable" src="images/pause-icon.png"
-                alt="Pause icon to show auto-scroll is paused">
-        </button>
     </div>
 
     <div class="text-wrapper">
         <div id="text" class="unselectable">
-            <!-- This is dynamically filled when TextScroller object is instantiated -->
+            <!--
+                IMPORTANT NOTE: 
+                    This is filled when TextScroller object is instantiated. 
+                    However, the '...' below forces font-family styles to be active before
+                    the first mapping of text. Others, text will be incorretly meeasured
+            -->
+            filler text, removed immediately
         </div>
     </div>
 

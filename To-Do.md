@@ -66,3 +66,4 @@
 - Implement cover paste-text textarea button (it's ugly)
 - ✔ Enable mapping of text in text box
 - Solve initial delayed centering issue.
+- change scrollerText id of #text to #scrollerText

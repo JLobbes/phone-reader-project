@@ -9,4 +9,10 @@ function toggleInputTextarea() {
     pasteButton.classList.toggle('visible');
     pasteTextArea.classList.toggle('visible');
 
+    if(pasteTextArea.classList.contains('visible')) { 
+        console.log('pasteTextArea visible')
+        setTimeout(() => {
+            pasteTextArea.focus();
+        }, 50);
+    }
 }

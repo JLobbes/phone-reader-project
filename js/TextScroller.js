@@ -7,33 +7,39 @@ class Word {
 
 class TextScroller {
     constructor() {
+        // Main DOM items
         this.scrollerBox = document.getElementsByClassName('text-wrapper')[0];
         this.scrollerText = document.getElementById('text');
+        this.userTextInput;
         this.intialText;
+        this.userTextInput;
+        this.wordPositionMap_Array = [];
 
+        // DOM item position variabless 
         this.scrollerBoxCenter;
         this.scrollerTextLeft;
-        this.lengthOffCenter;
-
-        this.words = [];
-        this.wordPositionalMap;
-        this.visibleWords;
+        this.currentScrollPosition; // scrollerBoxLeft relative to center-line
+        this.wordPostionMap_Object;
+        this.visibleWords = {};
 
         // Widths are defined in %
         this.scrollerBoxWidthNarrowest = 45; 
         this.scrollerBoxWidthWider = 70; 
         this.scrollerBoxWidthWidest = 95; 
+
         // Heights are defined in px
         this.scrollerBoxHeightShortest = 100; 
         this.scrollerBoxHeightTaller = 250; 
         this.scrollerBoxHeightTallest = 400; 
 
+        // Font Size variables
         this.fontSizePresetSmallest = 20;
         this.fontSizePresetSmaller = 30;
         this.fontSizePresetMedium = 40;
         this.fontSizePresetLarger = 50;
         this.fontSizePresetLargest = 60;
         
+        // Drag control + movement variables
         this.translate = 0;
         this.isDown = false;
         this.cursorStartX = 0;
@@ -43,6 +49,7 @@ class TextScroller {
         this.dragPresetDouble = 2;
         this.dragPresetTriple = 3;
 
+        // Keyboard control variables
         this.keyboardStep = 100;
         this.stepPresetSmall = 60;
         this.stepPresetMedium = 100;
@@ -50,10 +57,11 @@ class TextScroller {
         this.keyLeft = 'ArrowLeft';
         this.keyRight = 'ArrowRight';
 
+        // Animation variables
         this.autoScrollInterval = null;
         this.scrollSpeed = 1; // pixels per interval
         this.frameRate = 5; // milliseconds
-        this.autoScrollTransition = 'transform 0s linear';
+        this.scrollerTextMovementStyle = 'transform 0s linear';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
 
         this.addEventListeners();
@@ -74,8 +82,8 @@ class TextScroller {
 
         // Button listeners
         document.getElementById('playButton').addEventListener('click', this.toggleAutoScroll.bind(this));
-        // document.getElementById('goButton').addEventListener('click', this.setText.bind(this));
-        document.getElementById('goButton').addEventListener('click', this.setScrollerText.bind(this));
+        document.getElementById('goButton').addEventListener('click', this.handleUserTextInput.bind(this));
+        document.getElementById('centerButton').addEventListener('click', this.centerText.bind(this));
 
         document.getElementById('makeScrollerBoxNarrow').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthNarrowest));
         document.getElementById('makeScrollerBoxWider').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWider));
@@ -111,44 +119,157 @@ class TextScroller {
         this.intialText = text;
     }
 
-    setScrollerText() {
-        const userTextBox = document.getElementById('textInput');
-        const userTextInput = userTextBox.value ? userTextBox.value : this.intialText;
-        if (userTextBox) userTextBox.value = ''; // Clear the user-input textarea
-        console.log('here')
+    handleUserTextInput() {
+        toggleInputTextarea(); // Global function in pasteText.js
 
-        this.scrollerText.textContent = userTextInput;
-        toggleInputTextarea(); // Global function from js/pasteText.js       
-            
-        // Delay to ensure DOM is loaded on first iteration
-        setTimeout(() => {
-            this.centerText();
-            this.wordPositionalMap = this.getWordMap();
-            console.log(this.wordPositionalMap);
-        }, 50); // 50 ms delay
+        const userInputTextarea = document.getElementById('textInput');
+        const userTextInput = userInputTextarea.value ? userInputTextarea.value : this.intialText;
+        if (userInputTextarea) userInputTextarea.value = ''; // Clear the user-input textarea
+
+        this.userTextInput = userTextInput;
+        this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+
+        this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
+        this.scrollerText.textContent = this.userTextInput;
+
+        this.visibleWords = {...this.wordPostionMap_Object};
+        this.assessBoundaies();
+        console.log('visible words:', this.visibleWords);
     }
+
+    prepareTextInSpan(index) {
+        // Get word from mapped words
+        const wordData = this.wordPostionMap_Object[index];
+        const wordElement = document.createElement('span');
+        wordElement.textContent = wordData.text;
+        wordElement.classList.add('word');
+        wordElement.id = `${JSON.stringify(wordData)}`;
+        if(wordData.text === " ") {
+            wordElement.style.backgroundColor = 'red';
+            wordElement.innerHTML = '&nbsp;';
+        }    
+        return wordElement;
+    }
+
+    assessBoundaies() {
+
+        this.getCurrentScrollPosition();
+        const halfScrollerBoxWidth = this.scrollerBox.getBoundingClientRect().width / 2;
+        const scrollerTextWidth = this.scrollerText.getBoundingClientRect().width;
+
+        const rightBoundary = halfScrollerBoxWidth - 50; 
+        if(this.currentScrollPosition > rightBoundary) { 
+            this.reboundPositionTo(0);
+        };
+
+        const leftBoundary = -scrollerTextWidth - halfScrollerBoxWidth + 50;
+        if(this.currentScrollPosition < leftBoundary) {
+            this.reboundPositionTo(-scrollerTextWidth);
+        }
+
+        // Ensure there are words visible
+        if(Object.keys(this.visibleWords).length === 0) {
+            this.visibleWords = {...this.wordPostionMap_Object};
+        }
+        this.assessRightBoundaryWords();
+        this.assessLeftBoundaryWords();
+        
+        this.printVisibleWords();
+    }  
     
+    assessRightBoundaryWords() {
+        let requiresModification;
+        
+        do {
+            const currentWords = {...this.visibleWords};
+            if (Object.keys(currentWords).length === 0) {break}; // Exit if no data to assess
+    
+            this.getCurrentScrollPosition();
+            const halfScreenWidth = (this.scrollerBox.getBoundingClientRect().width / 2)
+            const rightBoundary = -(this.currentScrollPosition) + halfScreenWidth;
+            const rightMostWordKey = Object.keys(currentWords).at(-1);
+            const rightMostWord = currentWords[rightMostWordKey];
+            const { index, position, width } = rightMostWord;
+            
+            const isLastWord = index >= this.wordPositionMap_Array.length - 1;
+            const isBeyondBoundary = position > rightBoundary;
+            const isWithinAdditionZone = position + width < rightBoundary; 
+            
+            requiresModification = false;
+    
+            // Add text if within the addition zone and not at the last word
+            if (isWithinAdditionZone && !isLastWord) {
+                this.visibleWords[(index + 1)] = this.wordPostionMap_Object[(index + 1)];  // Adds one word to visible words
+                requiresModification = true;
+            }
+            
+            // Remove text if beyond the buffer zone
+            if (isBeyondBoundary) {
+                delete this.visibleWords[index];
+                requiresModification = true;
+            }
+    
+        } while (requiresModification);
+    }    
+
+    assessLeftBoundaryWords() {
+        
+        let requiresModification;
+        
+        do {
+            const currentWords = {...this.visibleWords};
+            if (Object.keys(currentWords).length === 0) break; // Exit if no data to assess
+    
+            this.getCurrentScrollPosition();
+            const halfScreenWidth = (this.scrollerBox.getBoundingClientRect().width / 2)
+            const leftBoundary = -(this.currentScrollPosition) - halfScreenWidth;
+            const leftMostWordKey = Object.keys(currentWords).at(0); 
+            const leftMostWord = currentWords[leftMostWordKey];
+            const { index, position, width } = leftMostWord;
+            
+            const isFirstWord = index === 0;
+            const isBeyondBoundary = position + width < leftBoundary;
+            const isWithinAdditionZone = position > leftBoundary; 
+            
+            requiresModification = false;
+    
+            // Add text if within the addition zone and not at the last word
+            if (isWithinAdditionZone && !isFirstWord) {
+                this.visibleWords[(index - 1)] = this.wordPostionMap_Object[(index - 1)];  // Adds one word to visible words
+                requiresModification = true;
+            }
+            
+            // Remove text if beyond the buffer zone
+            if (isBeyondBoundary) {
+                delete this.visibleWords[index];
+                requiresModification = true;
+            }
+    
+        } while (requiresModification);
+    }    
+
     getWordMap() {
         // Below logic is breaking text into span for measurment
 
         // Split the text into an array of words (including spaces)
-        const currentTextRaw = this.scrollerText.textContent;
-        const currentTextSliced = currentTextRaw.match(/\S+|\s+/g) || [];
+        const textRaw = this.userTextInput;
+        const textProcessed = textRaw.match(/\S+|\s+/g) || [];
 
         // Create the words array without calculating widths
-        this.words = currentTextSliced.map((word) => new Word(word, 0));
+        this.wordPositionMap_Array = textProcessed.map((word) => new Word(word, 0));
 
         // Wrap each word in a span element and add it to the scrollerText
         // Clear scrollerText and replace with words wrapped in spans
         this.scrollerText.textContent = '';
-        this.scrollerText.innerHTML = this.words
+        this.scrollerText.innerHTML = this.wordPositionMap_Array
             .map((wordObj, index) => `<span class="word" id="word-${index}">${wordObj.text}</span>`)
             .join('');
 
         let position = 0;
 
-        return this.words.map((wordObj, index) => {
-            // Get the current span from the DOM
+        return this.wordPositionMap_Array.map((wordObj, index) => {
+            // Get the word wrapped in a span from the DOM
             const wordElement = document.getElementById(`word-${index}`);
 
             // Measure the width of the word using getBoundingClientRect
@@ -160,6 +281,7 @@ class TextScroller {
 
             // Create word data object with position
             const wordData = {
+                index: index,
                 text: wordObj.text,
                 width: wordObj.width,
                 position
@@ -171,44 +293,51 @@ class TextScroller {
             return wordData;
         });
     };
-    
-    setVisibleWords() {
-        const visibleWords = [];
-    
-        const leftBoundary = Math.abs(this.lengthOffCenter) - 300; // The left boundary in the scrollerBox
-        const rightBoundary = Math.abs(this.lengthOffCenter) + 300; // The right boundary
-    
-        const wordPositions = this.getWordMap(); // Retrieve words with their positions
-    
-        for (const word of wordPositions) {
-            if (word.position + word.width > leftBoundary && word.position < rightBoundary) {
-                visibleWords.push(word.text.trim());
+
+    printVisibleWords() {
+        let currentView = ''
+
+        for (const key in this.visibleWords) {
+            if (Object.hasOwnProperty.call(this.visibleWords, key)) {
+                const word = this.visibleWords[key];
+                currentView += `${word.text}`;
             }
         }
-    
-        this.visibleWords = visibleWords;
-
-        return {
-            visibleWords
-        };
-    }
-    
-    updatePosition(shift) {
-        this.scrollerText.style.transform = `translateX(${shift}px)`;
-        this.getLengthOffCenter();
-        console.log(this.lengthOffCenter);
-        // this.setVisibleWords();
-        // console.log(this.visibleWords);
-        // this.printPositionalStats();
+        console.log(currentView);   
     }
 
-    // printPositionalStats() {
+    jumpPositionTo(targetScrollPosition) {
+        this.removeSmoothTransition();
+        
+        this.getCurrentScrollPosition();
+        const amountMoved = targetScrollPosition - this.currentScrollPosition; 
+        this.translate += amountMoved; // this.translate is for original scrolling logic, hasn't been updated
+        
+        this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
 
-    //     // Delay center text to ensure dom is loaded on first iteration
-    //     setTimeout(() => {
-    //         // console.log("this.lengthOffCenter:", this.lengthOffCenter);
-    //     }, 500); // 500 ms delay to allow animation to complete
-    // }
+        // console.log(`scollerText jumped to: ${this.getCurrentScrollPosition()}`);
+    }
+
+    reboundPositionTo(targetScrollPosition) {
+        this.endDrag();
+        this.getCurrentScrollPosition();
+        this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
+        
+        setTimeout(() => {
+            
+            this.endDrag();
+            this.translate = targetScrollPosition;
+            this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
+        }, 1000); // To clean up after user mouseup event sets this.translate to positive number.
+    }
+    
+    shiftPosition(shiftAmount) {
+        this.scrollerText.style.transform = `translateX(${shiftAmount}px)`;
+        this.getCurrentScrollPosition();
+        this.assessBoundaies();
+        
+        // console.log(`scollerText shifted to: ${this.getCurrentScrollPosition()}`);
+    }
 
     setDragMultiplier(multiplier) {
         this.dragMultiplier = multiplier;
@@ -224,16 +353,16 @@ class TextScroller {
         this.cursorStartX = ((e.pageX || e.touches[0].pageX) * this.dragMultiplier) - this.scrollerText.offsetLeft;
         this.removeSmoothTransition();
     }
-
+    
     doDrag(e) {
         if (!this.isDown) return;
         e.preventDefault();
         const cursorEndX = ((e.pageX || e.touches[0].pageX) * this.dragMultiplier) - this.scrollerText.offsetLeft;
         const walk = cursorEndX - this.cursorStartX;
-        this.updatePosition(this.translate + walk);
+        this.shiftPosition(this.translate + walk);
         this.offsetDuringDrag = walk;
     }
-
+    
     endDrag() {
         if(this.autoScrollPaused) {
             this.autoScrollPaused = false;
@@ -254,13 +383,13 @@ class TextScroller {
     }
 
     applyAutoScrollTransition() {
-        this.scrollerText.style.transition = this.autoScrollTransition;
+        this.scrollerText.style.transition = this.scrollerTextMovementStyle;
     }
 
     setAutoScrollConfiguration(autoScrollConfiguration) {
         this.scrollSpeed = autoScrollConfiguration.scrollSpeed;
         this.frameRate = autoScrollConfiguration.frameRate;
-        this.autoScrollTransition = autoScrollConfiguration.autoScrollTransition;
+        this.scrollerTextMovementStyle = autoScrollConfiguration.autoScrollTransition;
 
         // To-Do: Encapsulate and move the following transition flush and reset 
         if(this.autoScrollInterval) {
@@ -271,17 +400,17 @@ class TextScroller {
         } else {
             this.stopAutoScroll(); // In order to clear interval
             this.applyAutoScrollTransition();
-
         }
     }
 
     keyboardControl(e) {
+        this.applySmoothTransition();
         if (e.key === this.keyLeft) {
             this.translate -= this.keyboardStep;
-            this.updatePosition(this.translate);
+            this.shiftPosition(this.translate);
         } else if (e.key === this.keyRight) {
             this.translate += this.keyboardStep;
-            this.updatePosition(this.translate);
+            this.shiftPosition(this.translate);
         }
     }
 
@@ -301,21 +430,22 @@ class TextScroller {
         this.scrollerText.style.fontSize = `${fontSize}px`;
     }
 
-    getLengthOffCenter() {
+    getCurrentScrollPosition() {
         this.scrollerTextLeft = this.scrollerText.getBoundingClientRect().left;
         this.scrollerBoxCenter = this.scrollerBox.getBoundingClientRect().left + (this.scrollerBox.getBoundingClientRect().width / 2);
         
-        this.lengthOffCenter = this.scrollerTextLeft - this.scrollerBoxCenter ;
-        return this.lengthOffCenter;
+        this.currentScrollPosition = this.scrollerTextLeft - this.scrollerBoxCenter ;
+        // console.log('currentScrollPosition updated. Now is:', this.currentScrollPosition);
+        return this.currentScrollPosition;
     }
 
     centerText() {
-        this.getLengthOffCenter(); // Update values of scrollerBoxCenter & scrollerTextLeft for accurate measurent.
+        this.getCurrentScrollPosition(); // Update values of scrollerBoxCenter & scrollerTextLeft for accurate measurent.
         const centeringAdjustment = this.scrollerBoxCenter - this.scrollerTextLeft;
     
         // Update the translate property
         this.translate += centeringAdjustment;
-        this.updatePosition(this.translate);
+        this.shiftPosition(this.translate);
     }
     
 
@@ -332,7 +462,7 @@ class TextScroller {
             this.translate -= this.scrollSpeed; 
             this.removeSmoothTransition();
             this.applyAutoScrollTransition();
-            this.updatePosition(this.translate);
+            this.shiftPosition(this.translate);
         }, this.frameRate); // frameRate is not FPS, but ms between animation
         this.toggleAutoScrollIcons('stopIcon');
     }
@@ -387,29 +517,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // If you have any feedback, please do reach out. Happy reading!
         `
     );
-    currentScroller.setScrollerText();
     setTimeout(() => {
-        currentScroller.startAutoScroll();
-    }, 1000); // 1s delay
+        currentScroller.handleUserTextInput(); // Pulled from user-input textarea
+    }, 25);
 });
 
-
-// Hi, I made this tool to help me read. Maybe it will help you as well.
-        
-// Press the stop button above (↑↑↑↑) to stop auto-scroll or just tap the screen to pause.
-
-// To paste your text here, press the paste icon above and paste into the box. 
-// Then jam the curved arrow.
-
-// Swipe left or right to scroll through the text. You can click with a mouse or punch 
-// arrow keys on the keyboard as well. 
-
-// Below, you can press the settings button to change scroll speed, fontSize and more.
-
-// When you change settings, they are saved on your browser's local storage. 
-// No data is transmitted or stored anywhere else on the web.
-// If you clear your browser history, your settings will be cleared too. 
-
-// Scroll back to back to the beginning or press refresh to read this again.
-
-// If you have any feedback, please do reach out. Happy reading!
