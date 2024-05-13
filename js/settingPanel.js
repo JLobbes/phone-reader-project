@@ -19,10 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
         toggleButtonContainers.forEach(function(buttonContainer) {
             removeHiddenSettingClass(buttonContainer);
             const containerIndex = Array.from(toggleButtonContainers).indexOf(buttonContainer);
-            console.log(containerIndex);
-            console.log(dividerIndex);
             if(containerIndex >= dividerIndex) {
-                console.log('here');
                 reApplyHiddenSettingsClass(buttonContainer);
             }
         });

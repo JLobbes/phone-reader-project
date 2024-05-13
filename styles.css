@@ -162,3 +162,16 @@ body.night-mode {
 }
   
 
+#miniConsole {
+    position: absolute;
+    display: block;
+    border: #eee solid 2px;
+    border-radius: 5px;
+    top: 10px;
+    height: 100px;
+    width: 300px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+    color: #eee;
+    font-size: 20px;
+}

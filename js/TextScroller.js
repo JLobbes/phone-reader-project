@@ -119,7 +119,9 @@ class TextScroller {
         this.intialText = text;
     }
 
+
     handleUserTextInput() {
+        this.centerText();
         toggleInputTextarea(); // Global function in pasteText.js
 
         const userInputTextarea = document.getElementById('textInput');
@@ -128,14 +130,12 @@ class TextScroller {
 
         this.userTextInput = userTextInput;
         this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
 
         this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
         this.scrollerText.textContent = this.userTextInput;
 
         this.visibleWords = {...this.wordPostionMap_Object};
         this.assessBoundaries();
-        console.log('visible words:', this.visibleWords);
     }
 
     prepareTextInSpan(index) {
@@ -304,6 +304,7 @@ class TextScroller {
             }
         }
         console.log(currentView);   
+        this.mobileDiagPrint('TEXT', currentView);
     }
 
     jumpPositionTo(targetScrollPosition) {
@@ -320,6 +321,8 @@ class TextScroller {
 
     reboundPositionTo(targetScrollPosition) {
         this.endDrag();
+        this.stopAutoScroll();
+        this.applySmoothTransition();
         this.getCurrentScrollPosition();
         this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
         
@@ -427,45 +430,52 @@ class TextScroller {
     }
 
     setFontSize(fontSize) {
-        
-        // Find reference word
-        this.getCurrentScrollPosition();
-        const currentWords = {...this.visibleWords};
-        const referenceWord = { index: 0, distanceFromCenter: 1000};
-        for (const index in currentWords) {
-            if (Object.hasOwnProperty.call(currentWords, index)) {
-                const wordData = currentWords[index];
-                const position = wordData.position;
-                const distanceOffCenter = -this.currentScrollPosition - position;
-                if(Math.abs(distanceOffCenter) < Math.abs(referenceWord.distanceFromCenter)) {
-                    referenceWord.text = wordData.text;
-                    referenceWord.index = wordData.index;
-                    referenceWord.distanceFromCenter = distanceOffCenter;
+            // Find reference word
+            this.getCurrentScrollPosition();
+            const currentWords = {...this.visibleWords};
+            const referenceWord = { index: 0, distanceFromCenter: 1000};
+
+            this.mobileDiagPrint('current Scroll Position:', this.currentScrollPosition);
+            
+            for (const index in currentWords) {
+                if (Object.hasOwnProperty.call(currentWords, index)) {
+                    const wordData = currentWords[index];
+                    const position = wordData.position;
+                    const distanceOffCenter = -this.currentScrollPosition - position;
+                    if(Math.abs(distanceOffCenter) < Math.abs(referenceWord.distanceFromCenter)) {
+                        referenceWord.text = wordData.text;
+                        referenceWord.index = wordData.index;
+                        referenceWord.distanceFromCenter = distanceOffCenter;
+                    }
                 }
-            }
-        }        
-        
-        // Change text size
-        this.scrollerText.style.fontSize = `${fontSize}px`;
+            }        
 
-        // Remap text at different size
-        this.wordPostionMap_Object = {};
-        this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
-        this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
-        this.scrollerText.textContent = this.userTextInput;
+            this.mobileDiagPrint('referenceWord:', referenceWord.text);
+            this.mobileDiagPrint('distance:', referenceWord.distanceFromCenter);
 
-        // Scroll until reference word is back in place
-        const referenceWordRemapped = this.wordPostionMap_Object[referenceWord.index];
-        this.jumpPositionTo(-referenceWordRemapped.position);
-
-        // Readjust visible words
-        this.visibleWords = {};
-        this.visibleWords = {...this.wordPostionMap_Object};
-        console.log('visible words:', this.visibleWords);
-        
-        this.assessBoundaries();
-
+            
+            // Change text size
+            this.scrollerText.style.fontSize = `${fontSize}px`;
+    
+            // Remap text at different size
+            this.wordPostionMap_Object = {};
+            this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+            console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+            this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
+            this.scrollerText.textContent = this.userTextInput;
+    
+            // Scroll until reference word is back in place
+            const refWordNewData = this.wordPostionMap_Object[referenceWord.index];
+            this.mobileDiagPrint('referenceWordNew:', refWordNewData.text);
+            this.mobileDiagPrint('referenceWordNew:', refWordNewData.position);
+            this.jumpPositionTo(-refWordNewData.position);
+    
+            // Readjust visible words
+            this.visibleWords = {};
+            this.visibleWords = {...this.wordPostionMap_Object};
+            console.log('visible words:', this.visibleWords);
+            
+            this.assessBoundaries();
     }
 
     getCurrentScrollPosition() {
@@ -523,6 +533,15 @@ class TextScroller {
 
         const targetIcon = document.getElementById(iconToShow);
         targetIcon.classList.remove('hidden');
+    }
+
+    mobileDiagPrint(text, item) {
+        const miniConsole = document.getElementById('miniConsole');
+        const toPush = document.createElement('p');
+        toPush.textContent = `${text} ${item}`;
+        toPush.style.marginLeft = '5px'
+        miniConsole.appendChild(toPush);
+        miniConsole.scrollTop = miniConsole.scrollHeight;
     }
 }
 
