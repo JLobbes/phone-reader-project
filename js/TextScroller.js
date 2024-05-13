@@ -450,69 +450,37 @@ class TextScroller {
 
         // Change text size
         this.scrollerText.style.fontSize = `${fontSize}px`;
-        setTimeout(() => {
-            // Remap text at different size
-            this.wordPostionMap_Object = {};
-            this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-            console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+    
+        // Remap text at different size
+        this.wordPostionMap_Object = {};
+        this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
 
-            this.mobileDiagPrint('word ->', this.wordPostionMap_Object[2].text);
-            this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[2].position);
-            
-            this.mobileDiagPrint('word ->', this.wordPostionMap_Object[100].text);
-            this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[100].position);
-            
-            this.mobileDiagPrint('word ->', this.wordPostionMap_Object[200].text);
-            this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[200].position);
-            
-            this.mobileDiagPrint('word ->', this.wordPostionMap_Object[322].text);
-            this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[322].position);
-            
-            this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
-            this.scrollerText.textContent = this.userTextInput;
-
-            // Scroll until reference word is back in place
-            const refWordNewData = this.wordPostionMap_Object[referenceWord.index];
-            this.jumpPositionTo(-refWordNewData.position);
-
-            // Readjust visible words
-            this.visibleWords = {};
-            this.visibleWords = {...this.wordPostionMap_Object};
-            console.log('visible words:', this.visibleWords);
-            
-            this.assessBoundaries();
-        }, 1000);
-
-        // // Remap text at different size
-        // this.wordPostionMap_Object = {};
-        // this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-        // console.log('this.wordPositionMap:', this.wordPostionMap_Object);
-
-        // this.mobileDiagPrint('word ->', this.wordPostionMap_Object[2].text);
-        // this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[2].position);
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[2].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[2].position);
         
-        // this.mobileDiagPrint('word ->', this.wordPostionMap_Object[100].text);
-        // this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[100].position);
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[100].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[100].position);
         
-        // this.mobileDiagPrint('word ->', this.wordPostionMap_Object[200].text);
-        // this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[200].position);
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[200].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[200].position);
         
-        // this.mobileDiagPrint('word ->', this.wordPostionMap_Object[322].text);
-        // this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[322].position);
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[322].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[322].position);
         
-        // this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
-        // this.scrollerText.textContent = this.userTextInput;
+        this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
+        this.scrollerText.textContent = this.userTextInput;
 
-        // // Scroll until reference word is back in place
-        // const refWordNewData = this.wordPostionMap_Object[referenceWord.index];
-        // this.jumpPositionTo(-refWordNewData.position);
+        // Scroll until reference word is back in place
+        const refWordNewData = this.wordPostionMap_Object[referenceWord.index];
+        this.jumpPositionTo(-refWordNewData.position);
 
-        // // Readjust visible words
-        // this.visibleWords = {};
-        // this.visibleWords = {...this.wordPostionMap_Object};
-        // console.log('visible words:', this.visibleWords);
+        // Readjust visible words
+        this.visibleWords = {};
+        this.visibleWords = {...this.wordPostionMap_Object};
+        console.log('visible words:', this.visibleWords);
         
-        // this.assessBoundaries();
+        this.assessBoundaries();
     }
 
     getCurrentScrollPosition() {
@@ -581,6 +549,23 @@ class TextScroller {
         miniConsole.appendChild(toPush);
         miniConsole.scrollTop = miniConsole.scrollHeight;
     }
+
+    isIphone() {
+        const mediaQuery = window.matchMedia("(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)");
+        if(mediaQuery.matches) {
+            this.mobileDiagPrint('this is iphone', mediaQuery)
+        } else {
+            this.mobileDiagPrint('could not detect iphone', mediaQuery);
+        }
+    }
+
+    isIphonedos() {
+        if(/iPhone/.test(navigator.userAgent)) {
+            this.mobileDiagPrint('this is iphone')
+        } else {
+            this.mobileDiagPrint('could not detect iphon on secondGo');
+        }
+    }
 }
 
 
@@ -614,6 +599,8 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         currentScroller.handleUserTextInput(); // Pulled from user-input textarea
         currentScroller.setFontSize(40);
+        currentScroller.isIphone();
+        currentScroller.isIphonedos();
     }, 25);
 });
 
