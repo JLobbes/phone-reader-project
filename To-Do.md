@@ -67,3 +67,4 @@
 - ✔ Enable mapping of text in text box
 - Solve initial delayed centering issue.
 - change scrollerText id of #text to #scrollerText
+- Create a favicon

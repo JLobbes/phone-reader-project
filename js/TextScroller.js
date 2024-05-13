@@ -278,7 +278,7 @@ class TextScroller {
 
             // Measure the width of the word using getBoundingClientRect
             const wordRect = wordElement.getBoundingClientRect();
-            const wordWidth = wordRect.width;
+            let wordWidth = wordRect.width;
 
             const wordWidthScaler = {
                 // Scaling factor for mapped with on iphones
@@ -291,7 +291,6 @@ class TextScroller {
             }
 
             if(this.isIphone) {
-                console.log('Inside iphone scaler!');
                 this.mobileDiagPrint('Inside iphone scaler!');
                 wordWidth *= wordWidthScaler[this.fontSize];
             }
