@@ -283,11 +283,11 @@ class TextScroller {
             const wordWidthScaler = {
                 // Scaling factor for mapped with on iphones
                 // fontSize: scale
-                   20: 1.269475,
-                   30: 1.149526,
-                   40: 1.044851,
-                   50: 1.000223,
-                   60: 1.000279,
+                   20: 0.787727,
+                   30: 0.869924,
+                   40: 0.957121,
+                   50: 0.999897,
+                   60: 0.999721,
             }
 
             if(this.isIphone) {
