@@ -33,6 +33,7 @@ class TextScroller {
         this.scrollerBoxHeightTallest = 400; 
 
         // Font Size variables
+        this.fontSize = 30;
         this.fontSizePresetSmallest = 20;
         this.fontSizePresetSmaller = 30;
         this.fontSizePresetMedium = 40;
@@ -63,6 +64,9 @@ class TextScroller {
         this.frameRate = 5; // milliseconds
         this.scrollerTextMovementStyle = 'transform 0s linear';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
+
+        // Media query variables
+        this.isIphone = false;
 
         this.addEventListeners();
         this.applySmoothTransition();
@@ -276,6 +280,22 @@ class TextScroller {
             const wordRect = wordElement.getBoundingClientRect();
             const wordWidth = wordRect.width;
 
+            const wordWidthScaler = {
+                // Scaling factor for mapped with on iphones
+                // fontSize: scale
+                   20: 1.269475,
+                   30: 1.149526,
+                   40: 1.044851,
+                   50: 1.000223,
+                   60: 1.000279,
+            }
+
+            if(this.isIphone) {
+                console.log('Inside iphone scaler!');
+                this.mobileDiagPrint('Inside iphone scaler!');
+                wordWidth *= wordWidthScaler[this.fontSize];
+            }
+
             // Update the width property in the word object
             wordObj.width = wordWidth;
 
@@ -449,7 +469,8 @@ class TextScroller {
         }        
 
         // Change text size
-        this.scrollerText.style.fontSize = `${fontSize}px`;
+        this.fontSize = fontSize;
+        this.scrollerText.style.fontSize = `${this.fontSize}px`;
     
         // Remap text at different size
         this.wordPostionMap_Object = {};
@@ -550,21 +571,12 @@ class TextScroller {
         miniConsole.scrollTop = miniConsole.scrollHeight;
     }
 
-    isIphone() {
-        const mediaQuery = window.matchMedia("(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)");
-        if(mediaQuery.matches) {
-            this.mobileDiagPrint('this is iphone', mediaQuery)
-        } else {
-            this.mobileDiagPrint('could not detect iphone', mediaQuery);
-        }
-    }
+    queryForIphone() {
+        // Attempt two methods to check if device is iphone
+        if(/iPhone/.test(navigator.userAgent)) this.isIphone = true; 
 
-    isIphonedos() {
-        if(/iPhone/.test(navigator.userAgent)) {
-            this.mobileDiagPrint('this is iphone')
-        } else {
-            this.mobileDiagPrint('could not detect iphon on secondGo');
-        }
+        const mediaQuery = window.matchMedia("(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)");
+        if(mediaQuery.matches) this.isIphone = true; 
     }
 }
 
@@ -572,6 +584,7 @@ class TextScroller {
 // Usage
 document.addEventListener('DOMContentLoaded', () => {
     const currentScroller = new TextScroller();
+    currentScroller.queryForIphone();
     currentScroller.setScrollerBoxWidth(95);
     currentScroller.setScrollerBoxHeight(250);
     currentScroller.setInitialText(
@@ -599,8 +612,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
         currentScroller.handleUserTextInput(); // Pulled from user-input textarea
         currentScroller.setFontSize(40);
-        currentScroller.isIphone();
-        currentScroller.isIphonedos();
     }, 25);
 });
 
