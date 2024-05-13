@@ -134,7 +134,7 @@ class TextScroller {
         this.scrollerText.textContent = this.userTextInput;
 
         this.visibleWords = {...this.wordPostionMap_Object};
-        this.assessBoundaies();
+        this.assessBoundaries();
         console.log('visible words:', this.visibleWords);
     }
 
@@ -152,7 +152,7 @@ class TextScroller {
         return wordElement;
     }
 
-    assessBoundaies() {
+    assessBoundaries() {
 
         this.getCurrentScrollPosition();
         const halfScrollerBoxWidth = this.scrollerBox.getBoundingClientRect().width / 2;
@@ -334,7 +334,7 @@ class TextScroller {
     shiftPosition(shiftAmount) {
         this.scrollerText.style.transform = `translateX(${shiftAmount}px)`;
         this.getCurrentScrollPosition();
-        this.assessBoundaies();
+        this.assessBoundaries();
         
         // console.log(`scollerText shifted to: ${this.getCurrentScrollPosition()}`);
     }
@@ -427,7 +427,44 @@ class TextScroller {
     }
 
     setFontSize(fontSize) {
+        
+        // Find reference word
+        const currentWords = {...this.visibleWords};
+        const referenceWord = { index: 0, distanceFromCenter: 1000};
+        for (const index in currentWords) {
+            if (Object.hasOwnProperty.call(currentWords, index)) {
+                const wordData = currentWords[index];
+                const position = wordData.position;
+                const distanceOffCenter = -this.currentScrollPosition - position;
+                if(Math.abs(distanceOffCenter) < Math.abs(referenceWord.distanceFromCenter)) {
+                    referenceWord.text = wordData.text;
+                    referenceWord.index = wordData.index;
+                    referenceWord.distanceFromCenter = distanceOffCenter;
+                }
+            }
+        }        
+        
+        // Change text size
         this.scrollerText.style.fontSize = `${fontSize}px`;
+
+        // Remap text at different size
+        this.wordPostionMap_Object = {};
+        this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+        this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
+        this.scrollerText.textContent = this.userTextInput;
+
+        // Scroll until reference word is back in place
+        const referenceWordRemapped = this.wordPostionMap_Object[referenceWord.index];
+        this.jumpPositionTo(-referenceWordRemapped.position);
+
+        // Readjust visible words
+        this.visibleWords = {};
+        this.visibleWords = {...this.wordPostionMap_Object};
+        console.log('visible words:', this.visibleWords);
+        
+        this.assessBoundaries();
+
     }
 
     getCurrentScrollPosition() {
@@ -494,7 +531,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const currentScroller = new TextScroller();
     currentScroller.setScrollerBoxWidth(95);
     currentScroller.setScrollerBoxHeight(250);
-    currentScroller.setFontSize(40);
     currentScroller.setInitialText(
         `// Hi, I made this tool to help me read. Maybe it will help you as well.
         
@@ -519,6 +555,7 @@ document.addEventListener('DOMContentLoaded', () => {
     );
     setTimeout(() => {
         currentScroller.handleUserTextInput(); // Pulled from user-input textarea
+        currentScroller.setFontSize(40);
     }, 25);
 });
 

@@ -1,6 +1,7 @@
 function toggleNightMode(settingObject) {
     const body = document.body;
     body.classList.toggle("night-mode");
+
     document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button, .settings-divider').forEach(element => {
         element.classList.toggle('night-mode');
     });
@@ -17,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (nightModeSetting.loadSetting('nightMode') === true) {
         
-        document.body.classList.add("night-mode");
+        document.body.classList.toggle("night-mode");
         document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button, .settings-divider').forEach(element => {
             element.classList.toggle('night-mode');
         }); // To-Do: refactor and make this a function
