@@ -304,7 +304,6 @@ class TextScroller {
             }
         }
         console.log(currentView);   
-        this.mobileDiagPrint('TEXT', currentView);
     }
 
     jumpPositionTo(targetScrollPosition) {
@@ -340,6 +339,7 @@ class TextScroller {
         this.assessBoundaries();
         
         // console.log(`scollerText shifted to: ${this.getCurrentScrollPosition()}`);
+        this.mobileDiagPrint('scrollPos:', this.currentScrollPosition);
     }
 
     setDragMultiplier(multiplier) {
@@ -430,52 +430,57 @@ class TextScroller {
     }
 
     setFontSize(fontSize) {
-            // Find reference word
-            this.getCurrentScrollPosition();
-            const currentWords = {...this.visibleWords};
-            const referenceWord = { index: 0, distanceFromCenter: 1000};
+        // Find reference word
+        this.getCurrentScrollPosition();
+        const currentWords = {...this.visibleWords};
+        const referenceWord = { index: 0, distanceFromCenter: 1000};
 
-            this.mobileDiagPrint('current Scroll Position:', this.currentScrollPosition);
-            
-            for (const index in currentWords) {
-                if (Object.hasOwnProperty.call(currentWords, index)) {
-                    const wordData = currentWords[index];
-                    const position = wordData.position;
-                    const distanceOffCenter = -this.currentScrollPosition - position;
-                    if(Math.abs(distanceOffCenter) < Math.abs(referenceWord.distanceFromCenter)) {
-                        referenceWord.text = wordData.text;
-                        referenceWord.index = wordData.index;
-                        referenceWord.distanceFromCenter = distanceOffCenter;
-                    }
+        for (const index in currentWords) {
+            if (Object.hasOwnProperty.call(currentWords, index)) {
+                const wordData = currentWords[index];
+                const position = wordData.position;
+                const distanceOffCenter = -this.currentScrollPosition - position;
+                if(Math.abs(distanceOffCenter) < Math.abs(referenceWord.distanceFromCenter)) {
+                    referenceWord.text = wordData.text;
+                    referenceWord.index = wordData.index;
+                    referenceWord.distanceFromCenter = distanceOffCenter;
                 }
-            }        
+            }
+        }        
 
-            this.mobileDiagPrint('referenceWord:', referenceWord.text);
-            this.mobileDiagPrint('distance:', referenceWord.distanceFromCenter);
+        // Change text size
+        this.scrollerText.style.fontSize = `${fontSize}px`;
 
-            
-            // Change text size
-            this.scrollerText.style.fontSize = `${fontSize}px`;
-    
-            // Remap text at different size
-            this.wordPostionMap_Object = {};
-            this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-            console.log('this.wordPositionMap:', this.wordPostionMap_Object);
-            this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
-            this.scrollerText.textContent = this.userTextInput;
-    
-            // Scroll until reference word is back in place
-            const refWordNewData = this.wordPostionMap_Object[referenceWord.index];
-            this.mobileDiagPrint('referenceWordNew:', refWordNewData.text);
-            this.mobileDiagPrint('referenceWordNew:', refWordNewData.position);
-            this.jumpPositionTo(-refWordNewData.position);
-    
-            // Readjust visible words
-            this.visibleWords = {};
-            this.visibleWords = {...this.wordPostionMap_Object};
-            console.log('visible words:', this.visibleWords);
-            
-            this.assessBoundaries();
+        // Remap text at different size
+        this.wordPostionMap_Object = {};
+        this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[2].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[2].position);
+        
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[100].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[100].position);
+        
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[200].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[200].position);
+        
+        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[322].text);
+        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[322].position);
+        
+        this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
+        this.scrollerText.textContent = this.userTextInput;
+
+        // Scroll until reference word is back in place
+        const refWordNewData = this.wordPostionMap_Object[referenceWord.index];
+        this.jumpPositionTo(-refWordNewData.position);
+
+        // Readjust visible words
+        this.visibleWords = {};
+        this.visibleWords = {...this.wordPostionMap_Object};
+        console.log('visible words:', this.visibleWords);
+        
+        this.assessBoundaries();
     }
 
     getCurrentScrollPosition() {
@@ -484,6 +489,7 @@ class TextScroller {
         
         this.currentScrollPosition = this.scrollerTextLeft - this.scrollerBoxCenter ;
         // console.log('currentScrollPosition updated. Now is:', this.currentScrollPosition);
+        // this.mobileDiagPrint('scrollerPos:', this.currentScrollPosition);
         return this.currentScrollPosition;
     }
 
