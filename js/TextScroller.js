@@ -291,7 +291,6 @@ class TextScroller {
             }
 
             if(this.isIphone) {
-                this.mobileDiagPrint('Inside iphone scaler!');
                 wordWidth *= wordWidthScaler[this.fontSize];
             }
 
@@ -358,7 +357,6 @@ class TextScroller {
         this.assessBoundaries();
         
         // console.log(`scollerText shifted to: ${this.getCurrentScrollPosition()}`);
-        this.mobileDiagPrint('scrollPos:', this.currentScrollPosition);
     }
 
     setDragMultiplier(multiplier) {
@@ -476,18 +474,6 @@ class TextScroller {
         this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
         console.log('this.wordPositionMap:', this.wordPostionMap_Object);
 
-        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[2].text);
-        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[2].position);
-        
-        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[100].text);
-        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[100].position);
-        
-        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[200].text);
-        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[200].position);
-        
-        this.mobileDiagPrint('word ->', this.wordPostionMap_Object[322].text);
-        this.mobileDiagPrint('pos ->', this.wordPostionMap_Object[322].position);
-        
         this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
         this.scrollerText.textContent = this.userTextInput;
 
@@ -509,7 +495,6 @@ class TextScroller {
         
         this.currentScrollPosition = this.scrollerTextLeft - this.scrollerBoxCenter ;
         // console.log('currentScrollPosition updated. Now is:', this.currentScrollPosition);
-        // this.mobileDiagPrint('scrollerPos:', this.currentScrollPosition);
         return this.currentScrollPosition;
     }
 
@@ -561,14 +546,14 @@ class TextScroller {
         targetIcon.classList.remove('hidden');
     }
 
-    mobileDiagPrint(text, item) {
-        const miniConsole = document.getElementById('miniConsole');
-        const toPush = document.createElement('p');
-        toPush.textContent = `${text} ${item}`;
-        toPush.style.marginLeft = '5px'
-        miniConsole.appendChild(toPush);
-        miniConsole.scrollTop = miniConsole.scrollHeight;
-    }
+    // mobileDiagPrint(text, item) {
+    //     const miniConsole = document.getElementById('miniConsole');
+    //     const toPush = document.createElement('p');
+    //     toPush.textContent = `${text} ${item}`;
+    //     toPush.style.marginLeft = '5px'
+    //     miniConsole.appendChild(toPush);
+    //     miniConsole.scrollTop = miniConsole.scrollHeight;
+    // }
 
     queryForIphone() {
         // Attempt two methods to check if device is iphone

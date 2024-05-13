@@ -162,7 +162,7 @@ body.night-mode {
 }
   
 
-#miniConsole {
+/* #miniConsole {
     position: absolute;
     display: block;
     border: #eee solid 2px;
@@ -174,4 +174,4 @@ body.night-mode {
     overflow-x: scroll;
     color: #eee;
     font-size: 20px;
-}
+} */
