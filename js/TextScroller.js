@@ -429,6 +429,7 @@ class TextScroller {
     setFontSize(fontSize) {
         
         // Find reference word
+        this.getCurrentScrollPosition();
         const currentWords = {...this.visibleWords};
         const referenceWord = { index: 0, distanceFromCenter: 1000};
         for (const index in currentWords) {
