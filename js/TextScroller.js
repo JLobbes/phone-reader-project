@@ -1,9 +1,3 @@
-class Word {
-    constructor(text, width) {
-        this.text = text;
-        this.width = width;
-    }
-}
 
 class TextScroller {
     constructor() {
@@ -313,15 +307,15 @@ class TextScroller {
     };
 
     printVisibleWords() {
-        let currentView = ''
+        let wordsInView = ''
 
         for (const key in this.visibleWords) {
             if (Object.hasOwnProperty.call(this.visibleWords, key)) {
                 const word = this.visibleWords[key];
-                currentView += `${word.text}`;
+                wordsInView += `${word.text}`;
             }
         }
-        console.log(currentView);   
+        console.log(wordsInView);   
     }
 
     jumpPositionTo(targetScrollPosition) {
@@ -598,4 +592,3 @@ document.addEventListener('DOMContentLoaded', () => {
         currentScroller.setFontSize(40);
     }, 25);
 });
-

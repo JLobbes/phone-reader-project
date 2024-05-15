@@ -1,34 +1,59 @@
-function toggleNightMode(settingObject) {
-    const body = document.body;
-    body.classList.toggle("night-mode");
+const nightMode = new UserSetting('nightMode');
 
-    document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button, .settings-divider').forEach(element => {
-        element.classList.toggle('night-mode');
-    });
+nightMode.loadStyles = function(state) {
 
-    // Using ternary operator to save the nightMode setting
-    const nightModeState = settingObject.loadSetting('nightMode') === true;
-    settingObject.saveSetting(nightModeState ? false : true);
+    const currentState = state ? state : this.loadSetting('nightMode'); 
+
+    const nightModeSpecificSelectors = [    
+        'body',    
+        '.text', 
+        '.text-wrapper', 
+        '.button-panel textarea',
+        ' .button-panel button'
+    ];
+
+    if(currentState === true) {
+        nightModeSpecificSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach((element) => {
+               element.classList.add('night-mode'); 
+            });
+        });
+
+        document.querySelectorAll('.button-divider img').forEach((divider) => {
+            divider.src = 'images/divider-icon-night-mode.png'
+        }); 
+
+        document.getElementById('nightModeOn').classList.remove('current');
+        document.getElementById('nightModeOff').classList.add('current');
+    } else {
+        nightModeSpecificSelectors.forEach(selector => {
+            document.querySelectorAll(selector).forEach((element) => {
+               element.classList.remove('night-mode'); 
+            });
+        });
+
+        document.querySelectorAll('.button-divider img').forEach((divider) => {
+            divider.src = 'images/divider-icon.png'
+        }); 
+
+        document.getElementById('nightModeOn').classList.add('current');
+        document.getElementById('nightModeOff').classList.remove('current');
+    }
 }
 
+nightMode.toggleNightMode = function() {
+    // Using ternary operator to save the nightMode setting
+    const lastState = this.loadSetting('nightMode') === true;
+    const currentState = this.saveSetting(lastState ? false : true);
 
-// Apply the saved theme on load
+    this.loadStyles(currentState);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
-    const nightModeSetting = new UserSetting('nightMode');
-
-    if (nightModeSetting.loadSetting('nightMode') === true) {
-        
-        document.body.classList.toggle("night-mode");
-        document.querySelectorAll('.text, .text-wrapper, .button-panel textarea, .button-panel button, .settings-divider').forEach(element => {
-            element.classList.toggle('night-mode');
-        }); // To-Do: refactor and make this a function
-    } else {
-        // Do nothing?
-    }
+    nightMode.loadStyles();
 
     const nightModeButton = document.querySelectorAll('.toggle-night-mode');
     nightModeButton.forEach(element => {
-        element.addEventListener('click', () => toggleNightMode(nightModeSetting));
+        element.addEventListener('click', () => nightMode.toggleNightMode());
     });
 });
-

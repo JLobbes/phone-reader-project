@@ -46,7 +46,7 @@
 - Add picture to text
 - Add broad navigation and/or tracking on page
 - Add instructions
-    - Add informational bubbles
+    - ~~Add informational bubbles~~
 - Add setting saved option
     - ✔ Add options to made slide more powerful
     - ✔ Add button show options (customize display)
@@ -57,14 +57,26 @@
 - Add full screen mode for mobile
 - ✔ Change buttons to collapsable panel
 - Change to extension
-- Add option for RSVP
+- Add option for RSVP ?
 - Add word search
-- Add word/text tracker 
+- ✔ Add word/text tracker 
+    - ✔ Solve text mapping issue for iphone
+    - Optimize when visibleWords is updates
+- ✔ Create boundaries for end + rebound
+    - Solve late mouse up issue (current has patch only)
 - Solve drag and drop compatibility for FireFox
 - Make click and drag more predictable
 - ✔ Ensure icons are not selectable 
 - Implement cover paste-text textarea button (it's ugly)
 - ✔ Enable mapping of text in text box
-- Solve initial delayed centering issue.
+- ✔ Solve initial delayed centering issue.
 - change scrollerText id of #text to #scrollerText
 - Create a favicon
+- ✔ Create a tools icon
+    - Hide everything on top in tools
+    - Make tools act like settings
+- Make a notification scroller for settings and tools.
+- Make a notifications buttons
+- Make a search tools
+- Make a copy current view tool
+- Make a remove all but text and settings button

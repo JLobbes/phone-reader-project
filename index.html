@@ -15,10 +15,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC&display=swap" rel="stylesheet">
 </head>
 
-<body>
-    <!-- <div id="miniConsole"></div> -->
+<body class="unselectable">
     <div class="button-panel">
-        
+        <div>
+            <button id="openTools" >
+                <img id="toolIcon" src="images/hammer-icon.png" class="unselectable"
+                alt="Hammer icon to indicate tools">
+            </button>
+            <button id="closeTools" class="hidden">
+                <img id="settingsIconActive" src="images/hammer-icon-active.gif" class="unselectable"
+                alt="Jiggling hammer icon to indicate setting are open">
+            </button>
+        </div>
+
         <textarea id="textInput" class="hidden-setting visible" placeholder="Paste here.."></textarea>
         <button id="pasteText" class="hidden-setting">
             <img src="images/paste-icon.png" class="unselectable"
@@ -30,17 +39,10 @@
             alt="Text reading 'Go' to indicate put text on reader.">
         </button>
         
-        <div style="width: 20px;">
-            <div class="settings-divider"></div>
-        </div>
         
         <button id="centerButton">
             <img id="center" class="unselectable" src="images/center-icon.png" alt="Center">
         </button>
-        
-        <div style="width: 20px;">
-            <div class="settings-divider"></div>
-        </div>
         
         <button id="playButton">
             <img id="playIcon" class="unselectable" src="images/play-icon.png" alt="Play icon to start auto-scroll">
@@ -51,25 +53,20 @@
     </div>
 
     <div class="text-wrapper">
+        <div id="toolNotification"></div>
         <div id="text" class="unselectable">
             <!--
                 IMPORTANT NOTE: 
-                    This is filled when TextScroller object is instantiated. 
-                    However, the '...' below forces font-family styles to be active before
-                    the first mapping of text. Others, text will be incorretly meeasured
+                This is filled when TextScroller object is instantiated. 
+                However, the '...' below forces font-family styles to be active before
+                the first mapping of text. Others, text will be incorretly meeasured
             -->
             filler text, removed immediately
         </div>
+        <div id="setttingsNotification"></div>
     </div>
 
     <div id="settings" class="button-panel">
-        <!--
-            IMPORTANT NOTE: 
-                Settings has two types of toggle buttons, (1) current-state, and (2) next-state.
-                For current-state buttons, the <img> and <button> elements appear mixed up in
-                the HTML below as the action (show in element id), shows the next state while the 
-                icon shows the current state.
-         -->
         <div>
             <button id="openSettings" >
                 <img id="settingsIcon" src="images/setting-gear-icon.png" class="unselectable"
@@ -81,162 +78,179 @@
             </button>
         </div>
 
-        <!-- The divider has inline styles to overide the toggle-button-container class -->
-        <div id="settingsDividerContainer" class="toggle-button-container hidden-setting" draggable="true"
-            style="width: 20px; cursor: pointer; background-color: transparent;" 
-            >
-            <div class="settings-divider"></div>
+        <div id="externalDivider" class="hidden">
+            <div class="button-divider">
+                <img src="images/divider-icon.png" alt="">
+            </div>
         </div>
+        
+        <div class="nested-buttons">
+            <!--
+                IMPORTANT NOTE: 
+                    Settings has two types of toggle buttons, (1) current-state, and (2) next-state.
+                    For current-state buttons, the <img> and <button> elements appear mixed up in
+                    the HTML below as the action (show in element id), shows the next state while the 
+                    icon shows the current state.
+            -->
 
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <button class="toggle-night-mode">
-                <img id="nightModeIcon" src="images/night-mode-icon.png" class="unselectable"
-                    alt="Image of moon and stars to indicate night mode">
-            </button>   
-            <button class="toggle-night-mode hidden">
-                <img id="daylightModeIcon" src="images/daylight-mode-icon.png" class="unselectable"
-                    alt="Image of sun to indicate daylight mode">
-            </button>
-        </div>
-        
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <!-- See note above regarding next-state buttons -->
-            <button id="makeTextSmaller" class="hidden">
-                <img id="smallestText" src="images/text-icon-smallest.png" class="unselectable"
-                    alt="Image of text next to 4 horizontal dashes to indicate text is smallest">
-            </button>
-        
-            <button id="makeTextMedium" class="hidden">
-                <img id="smallerText" src="images/text-icon-smaller.png" class="unselectable"
-                    alt="Image of text next to 3 horizontal dashes to indicate text is smallest">
-            </button>
-        
-            <button id="makeTextLarger">
-                <img id="mediumText" src="images/text-icon-med.png" class="unselectable"
-                    alt="Image of text next to 2 horizontal dashes to indicate text is medium sized">
-            </button>
-        
-            <button id="makeTextLargest" class="hidden">
-                <img id="largestText" src="images/text-icon-large.png" class="unselectable"
-                    alt="Image of text next to 1 horizontal dash to indicate text is larger">
-            </button>
-        
-            <button id="makeTextSmallest" class="hidden">
-                <img id="largestText" src="images/text-icon-largest.png" class="unselectable"
-                    alt="Image of text next taking up all available space to indicate text is largest">
-            </button>
-        </div>
+            <div id="internalDivider" class="toggle-button-container hidden-setting" draggable="true">
+                <div class="button-divider">
+                    <img src="images/divider-icon.png" alt="">
+                </div>
+            </div>
 
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <!-- See note above regarding next-state buttons -->
-            <button id="makeScrollerBoxWider" class="hidden">
-                <img id="narrowestScrollerBoxIcon" src="images/narrowest-icon.png" class="unselectable"
-                    alt="Doubleheaded arrow between vertical lines to indicate narrowest scrollbox setting.">
-            </button>
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <button id="nightModeOn" class="toggle-night-mode hidden">
+                    <img id="nightModeIcon" src="images/night-mode-icon.png" class="unselectable"
+                        alt="Image of moon and stars to indicate night mode">
+                </button>   
+                <button id="nightModeOff" class="toggle-night-mode hidden">
+                    <img id="daylightModeIcon" src="images/daylight-mode-icon.png" class="unselectable"
+                        alt="Image of sun to indicate daylight mode">
+                </button>
+            </div>
             
-            <button id="makeScrollerBoxWidest" class="hidden">
-                <img id="widerScrollerBoxIcon" src="images/wider-icon.png" class="unselectable"
-                    alt="Doubleheaded arrow between vertical lines to indicate wider scrollbox setting.">
-            </button>
-
-            <button id="makeScrollerBoxNarrow">
-                <img id="widestScrollerBoxIcon" src="images/widest-icon.png" class="unselectable"
-                    alt="Doubleheaded arrow between vertical lines to indicate widest scrollbox setting.">
-            </button>
-        </div>
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <!-- See note above regarding next-state buttons -->
+                <button id="makeTextSmaller" class="hidden">
+                    <img id="smallestText" src="images/text-icon-smallest.png" class="unselectable"
+                        alt="Image of text next to 4 horizontal dashes to indicate text is smallest">
+                </button>
             
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <!-- See note above regarding next-state buttons -->
-            <button id="makeScrollerBoxTaller" class="hidden">
-                <img id="shortScrollerBoxIcon" src="images/shortest-icon.png" class="unselectable"
-                    alt="Doubleheaded arrow between horizontal lines to indicate shortest scrollbox setting.">
-            </button>
+                <button id="makeTextMedium" class="hidden">
+                    <img id="smallerText" src="images/text-icon-smaller.png" class="unselectable"
+                        alt="Image of text next to 3 horizontal dashes to indicate text is smallest">
+                </button>
+            
+                <button id="makeTextLarger" class="hidden current" >
+                    <img id="mediumText" src="images/text-icon-med.png" class="unselectable"
+                        alt="Image of text next to 2 horizontal dashes to indicate text is medium sized">
+                </button>
+            
+                <button id="makeTextLargest" class="hidden">
+                    <img id="largestText" src="images/text-icon-large.png" class="unselectable"
+                        alt="Image of text next to 1 horizontal dash to indicate text is larger">
+                </button>
+            
+                <button id="makeTextSmallest" class="hidden">
+                    <img id="largestText" src="images/text-icon-largest.png" class="unselectable"
+                        alt="Image of text next taking up all available space to indicate text is largest">
+                </button>
+            </div>
 
-            <button id="makeScrollerBoxTallest">
-                <img id="tallerScrollerBoxIcon" src="images/taller-icon.png" class="unselectable"
-                    alt="Doubleheaded arrow between horizontal lines to indicate taller scrollbox setting.">
-            </button>
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <!-- See note above regarding next-state buttons -->
+                <button id="makeScrollerBoxWider" class="hidden">
+                    <img id="narrowestScrollerBoxIcon" src="images/narrowest-icon.png" class="unselectable"
+                        alt="Doubleheaded arrow between vertical lines to indicate narrowest scrollbox setting.">
+                </button>
+                
+                <button id="makeScrollerBoxWidest" class="hidden">
+                    <img id="widerScrollerBoxIcon" src="images/wider-icon.png" class="unselectable"
+                        alt="Doubleheaded arrow between vertical lines to indicate wider scrollbox setting.">
+                </button>
 
-            <button id="makeScrollerBoxShort" class="hidden">
-                <img id="tallestScrollerBoxIcon" src="images/tallest-icon.png" class="unselectable"
-                    alt="Doubleheaded arrow between horizontal lines to indicate tallest scrollbox setting.">
-            </button>
-        </div>
+                <button id="makeScrollerBoxNarrow" class="hidden current">
+                    <img id="widestScrollerBoxIcon" src="images/widest-icon.png" class="unselectable"
+                        alt="Doubleheaded arrow between vertical lines to indicate widest scrollbox setting.">
+                </button>
+            </div>
+                
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <!-- See note above regarding next-state buttons -->
+                <button id="makeScrollerBoxTaller" class="hidden">
+                    <img id="shortScrollerBoxIcon" src="images/shortest-icon.png" class="unselectable"
+                        alt="Doubleheaded arrow between horizontal lines to indicate shortest scrollbox setting.">
+                </button>
 
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <!-- See note above regarding next-state buttons -->
-            <button id="keypressMedium" class="hidden"> 
-                <img id="keypressSmallIcon" src="images/keypress-icon.png" class="unselectable"
-                    alt="Arrow left to indicate key stroke moves text less.">
-            </button>
+                <button id="makeScrollerBoxTallest" class="hidden current">
+                    <img id="tallerScrollerBoxIcon" src="images/taller-icon.png" class="unselectable"
+                        alt="Doubleheaded arrow between horizontal lines to indicate taller scrollbox setting.">
+                </button>
 
-            <button id="keypressLarge">
-                <img id="keypressMediumIcon" src="images/keypress-double-icon.png" class="unselectable"
-                    alt="Arrow left to indicate key stroke moves text more.">
-            </button>
+                <button id="makeScrollerBoxShort" class="hidden">
+                    <img id="tallestScrollerBoxIcon" src="images/tallest-icon.png" class="unselectable"
+                        alt="Doubleheaded arrow between horizontal lines to indicate tallest scrollbox setting.">
+                </button>
+            </div>
 
-            <button id="keypressSmall" class="hidden">
-                <img id="keypressLargeIcon" src="images/keypress-triple-icon.png" class="unselectable"
-                    alt="Arrow left to indicate key stroke moves text most.">
-            </button>
-        </div>
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <!-- See note above regarding next-state buttons -->
+                <button id="keypressMedium" class="hidden"> 
+                    <img id="keypressSmallIcon" src="images/keypress-icon.png" class="unselectable"
+                        alt="Arrow left to indicate key stroke moves text less.">
+                </button>
 
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <!-- See note above regarding next-state buttons -->
-            <button id="dragSpeedFast" class="hidden">
-                <img id="slowPointerIcon" src="images/pointer-icon-single.png" class="unselectable"
+                <button id="keypressLarge" class="hidden current">
+                    <img id="keypressMediumIcon" src="images/keypress-double-icon.png" class="unselectable"
+                        alt="Arrow left to indicate key stroke moves text more.">
+                </button>
+
+                <button id="keypressSmall" class="hidden">
+                    <img id="keypressLargeIcon" src="images/keypress-triple-icon.png" class="unselectable"
+                        alt="Arrow left to indicate key stroke moves text most.">
+                </button>
+            </div>
+
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <!-- See note above regarding next-state buttons -->
+                <button id="dragSpeedFast" class="hidden">
+                    <img id="slowPointerIcon" src="images/pointer-icon-single.png" class="unselectable"
+                        alt="Gear icon to indicate open settings">
+                </button>
+
+                <button id="dragSpeedFastest" class="hidden">
+                    <img id="settingsIcon" src="images/pointer-icon-double.png" class="unselectable"
                     alt="Gear icon to indicate open settings">
-            </button>
+                </button>
 
-            <button id="dragSpeedFastest" class="hidden">
-                <img id="settingsIcon" src="images/pointer-icon-double.png" class="unselectable"
-                alt="Gear icon to indicate open settings">
-            </button>
+                <button id="dragSpeedSlow" class="hidden current">
+                    <img id="settingsIcon" src="images/pointer-icon-triple.png" class="unselectable"
+                    alt="Gear icon to indicate open settings">
+                </button>
+            </div>
 
-            <button id="dragSpeedSlow">
-                <img id="settingsIcon" src="images/pointer-icon-triple.png" class="unselectable"
-                alt="Gear icon to indicate open settings">
-            </button>
-        </div>
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <!-- See note above regarding next-state buttons -->
 
-        <div class="toggle-button-container hidden-setting" draggable="true">
-            <!-- See note above regarding next-state buttons -->
-
-            <button id="autoScrollFast" class="hidden">
-                <img id="autoScrollSlowIcon" src="images/sentence-scroll-slow.gif" class="unselectable"
-                alt="Animation of sentence scrolling slowly by.">
-            </button>
-            
-            <button id="autoScrollFastest" class="hidden">
-                <img id="autoScrollFastIcon" src="images/sentence-scroll-med.gif" class="unselectable"
-                alt="Animation of sentence scrolling by.">
-            </button>
-            
-            <button id="autoSwipeSlow" class="hidden">
-                <img id="autoScrollFastestIcon" src="images/sentence-scroll-fast.gif" class="unselectable"
-                alt="Animation of sentence scrolling by fast.">
-            </button>
-            
-            <button id="autoSwipeFast" class="hidden">
-                <img id="autoSwipeSlowIcon" src="images/sentence-swipe-slow.gif" class="unselectable"
-                alt="Animation of scrolling sentence with pointer to indicate slow automatic swipes.">
-            </button>
-            
-            <button id="autoSwipeFastest">
-                <img id="autoSwipeFastIcon" src="images/sentence-swipe-med.gif" class="unselectable"
-                alt="Animation of scrolling sentence with pointer to indicate fast automatic swipes.">
-            </button>
-            
-            <button id="autoScrollSlow"  class="hidden">
-                <img id="autoSwipeFastestIcon" src="images/sentence-swipe-fast.gif" class="unselectable"
-                    alt="Animation of scrolling sentence with pointer to indicate fastest automatic swipes.">
-            </button>
+                <button id="autoScrollFast" class="hidden">
+                    <img id="autoScrollSlowIcon" src="images/sentence-scroll-slow.gif" class="unselectable"
+                    alt="Animation of sentence scrolling slowly by.">
+                </button>
+                
+                <button id="autoScrollFastest" class="hidden">
+                    <img id="autoScrollFastIcon" src="images/sentence-scroll-med.gif" class="unselectable"
+                    alt="Animation of sentence scrolling by.">
+                </button>
+                
+                <button id="autoSwipeSlow" class="hidden current">
+                    <img id="autoScrollFastestIcon" src="images/sentence-scroll-fast.gif" class="unselectable"
+                    alt="Animation of sentence scrolling by fast.">
+                </button>
+                
+                <button id="autoSwipeFast" class="hidden">
+                    <img id="autoSwipeSlowIcon" src="images/sentence-swipe-slow.gif" class="unselectable"
+                    alt="Animation of scrolling sentence with pointer to indicate slow automatic swipes.">
+                </button>
+                
+                <button id="autoSwipeFastest" class="hidden">
+                    <img id="autoSwipeFastIcon" src="images/sentence-swipe-med.gif" class="unselectable"
+                    alt="Animation of scrolling sentence with pointer to indicate fast automatic swipes.">
+                </button>
+                
+                <button id="autoScrollSlow"  class="hidden">
+                    <img id="autoSwipeFastestIcon" src="images/sentence-swipe-fast.gif" class="unselectable"
+                        alt="Animation of scrolling sentence with pointer to indicate fastest automatic swipes.">
+                </button>
+            </div>
         </div>
     </div>
-    <script src="js/nightMode.js"></script>
     <script src="js/TextScroller.js"></script>
+    <script src="js/Word.js"></script>
+    <script src="js/Notification.js"></script>
     <script src="js/settingPanel.js"></script>
     <script src="js/UserSetting.js"></script>
+    <script src="js/nightMode.js"></script>
     <script src="js/pasteText.js"></script>
 </body>
 
