@@ -120,7 +120,7 @@ class TextScroller {
 
     handleUserTextInput() {
         this.centerText();
-        toggleInputTextarea(); // Global function in pasteText.js
+        toolbar.closePasteZone(); // Globally accessable instance of ButtonPanel in /js/toolbar.js
 
         const userInputTextarea = document.getElementById('textInput');
         const userTextInput = userInputTextarea.value ? userInputTextarea.value : this.intialText;

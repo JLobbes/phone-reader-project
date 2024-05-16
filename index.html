@@ -16,40 +16,60 @@
 </head>
 
 <body class="unselectable">
-    <div class="button-panel">
+    <div id="toolbar" class="button-panel">
         <div>
-            <button id="openTools" >
+            <button class="open">
                 <img id="toolIcon" src="images/hammer-icon.png" class="unselectable"
                 alt="Hammer icon to indicate tools">
             </button>
-            <button id="closeTools" class="hidden">
+            <button class="close hidden">
                 <img id="settingsIconActive" src="images/hammer-icon-active.gif" class="unselectable"
                 alt="Jiggling hammer icon to indicate setting are open">
             </button>
         </div>
 
-        <textarea id="textInput" class="hidden-setting visible" placeholder="Paste here.."></textarea>
-        <button id="pasteText" class="hidden-setting">
-            <img src="images/paste-icon.png" class="unselectable"
-            alt="Paste page icon to indicate open paste text textarea.">
-        </button>
-        
-        <button id="goButton">
-            <img src="images/curving-arrow-icon.png" class="unselectable"
-            alt="Text reading 'Go' to indicate put text on reader.">
-        </button>
-        
-        
-        <button id="centerButton">
-            <img id="center" class="unselectable" src="images/center-icon.png" alt="Center">
-        </button>
-        
-        <button id="playButton">
-            <img id="playIcon" class="unselectable" src="images/play-icon.png" alt="Play icon to start auto-scroll">
-            <img id="stopIcon" class="hidden unselectable" src="images/stop-icon.png" alt="Stop icon to stop auto-scroll">
-            <img id="pauseIcon" class="hidden unselectable" src="images/pause-icon.png"
-            alt="Pause icon to show auto-scroll is paused">
-        </button>
+        <div id="externalDivider" class="hidden">
+            <div class="button-divider">
+                <img src="images/divider-icon.png" alt="">
+            </div>
+        </div>
+
+        <div class="nested-buttons">
+            <div id="internalDivider" class="toggle-button-container hidden-setting" draggable="true">
+                <div class="button-divider">
+                    <img src="images/divider-icon.png" alt="">
+                </div>
+            </div>
+    
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <textarea id="textInput" class="hidden-setting visible" placeholder="Paste here.."></textarea>
+                <button id="pasteText" class="hidden current">
+                    <img src="images/paste-icon.png" class="unselectable"
+                    alt="Paste page icon to indicate open paste text textarea.">
+                </button>
+                <button id="goButton" class="hidden" >
+                    <img src="images/curving-arrow-icon.png" class="unselectable"
+                    alt="Text reading 'Go' to indicate put text on reader.">
+                </button>
+            </div>
+            
+            
+            
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <button id="centerButton" class="hidden current">
+                    <img id="center" class="unselectable" src="images/center-icon.png" alt="Center">
+                </button>
+            </div>
+            
+            <div class="toggle-button-container hidden-setting" draggable="true">
+                <button id="playButton" class="hidden current">
+                    <img id="playIcon" class="unselectable" src="images/play-icon.png" alt="Play icon to start auto-scroll">
+                    <img id="stopIcon" class="hidden unselectable" src="images/stop-icon.png" alt="Stop icon to stop auto-scroll">
+                    <img id="pauseIcon" class="hidden unselectable" src="images/pause-icon.png"
+                    alt="Pause icon to show auto-scroll is paused">
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="text-wrapper">
@@ -61,18 +81,17 @@
                 However, the '...' below forces font-family styles to be active before
                 the first mapping of text. Others, text will be incorretly meeasured
             -->
-            filler text, removed immediately
         </div>
         <div id="setttingsNotification"></div>
     </div>
 
     <div id="settings" class="button-panel">
         <div>
-            <button id="openSettings" >
+            <button class="open" >
                 <img id="settingsIcon" src="images/setting-gear-icon.png" class="unselectable"
                 alt="Gear icon to indicate settings">
             </button>
-            <button id="closeSettings" class="hidden">
+            <button class="close hidden">
                 <img id="settingsIconActive" src="images/spinning-setting-gear-icon.gif" class="unselectable"
                     alt="Spinning gear icon to indicate setting are open">
             </button>
@@ -246,12 +265,14 @@
         </div>
     </div>
     <script src="js/TextScroller.js"></script>
+    <script src="js/ButtonPanel.js"></script>
     <script src="js/Word.js"></script>
     <script src="js/Notification.js"></script>
-    <script src="js/settingPanel.js"></script>
     <script src="js/UserSetting.js"></script>
+
+    <script src="js/settingPanel.js"></script>
+    <script src="js/toolbar.js"></script>
     <script src="js/nightMode.js"></script>
-    <script src="js/pasteText.js"></script>
 </body>
 
 </html>
