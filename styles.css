@@ -59,20 +59,23 @@ body.night-mode {
 .button-panel textarea {
     display: none;
     width: 0px;
-    height: 50px;
+    height: 0px;
     margin: 0;
     padding: 0px;
+    border: none;
     box-sizing: border-box;
-    font-size: 16px;
-    border-radius: 4px;
-    transition: width 0.5s;
+    transition: width 0.5s, height 0.5s;
 }
 
 .button-panel textarea.visible {
     display: block;
-    width: 75px;
+    width: 80px;
+    height: 50px;
+    padding: 5px 0px 0px 5px;
     margin: 2.5px 2.5px 0px 2.5px;
-    transition: width 0.5s;
+    transition: width 0.5s, height 0.5s;
+    font-size: 16px;
+    border-radius: 4px;
     border: 1px solid #ccc;
 }
 
