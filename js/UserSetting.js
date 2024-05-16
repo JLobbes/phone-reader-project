@@ -12,3 +12,5 @@ class UserSetting {
         return storedValue ? JSON.parse(storedValue) : null;
     }
 }
+
+// export { UserSetting }

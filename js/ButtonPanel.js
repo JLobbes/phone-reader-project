@@ -202,3 +202,5 @@ class ButtonPanel {
         this.draggedItem = null;
     }
 }
+
+// export { ButtonPanel };

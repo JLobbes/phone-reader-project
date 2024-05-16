@@ -1,3 +1,5 @@
+// import { UserSetting } from 'UserSettings.js'
+
 const nightMode = new UserSetting('nightMode');
 
 nightMode.loadStyles = function(state) {
@@ -57,3 +59,5 @@ document.addEventListener('DOMContentLoaded', () => {
         element.addEventListener('click', () => nightMode.toggleNightMode());
     });
 });
+
+// export { nightMode }

@@ -1,3 +1,5 @@
+// import { ButtonPanel } from '/ButtonPanel.js'
+
 const toolbar = new ButtonPanel('toolbar');
 
 toolbar.pasteZoneStatus = 'open';
@@ -50,13 +52,7 @@ toolbar.closePasteZone = function() {
     }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    toolbar.closePasteZone();
-    toolbar.pasteButton.addEventListener('click', () => toolbar.openPasteZone());
-    toolbar.closePanelButton.addEventListener('click', () => toolbar.closePasteZone());
-});
-
-modules.export = toolbar;
+// export { toolbar };
 
 // To-Do incorportate longpress mimic for mobile!!
 // const element = document.getElementById('myElement');
