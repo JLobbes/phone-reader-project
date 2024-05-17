@@ -64,7 +64,6 @@ class TextScroller {
     }
 
     handleUserTextInput() {
-
         try {
             const userInputTextarea = document.getElementById('textInput');
             const userTextInput = userInputTextarea.value ? userInputTextarea.value : this.intialText;
