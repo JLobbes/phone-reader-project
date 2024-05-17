@@ -57,26 +57,22 @@ body.night-mode {
 }
 
 .button-panel textarea {
-    display: none;
     width: 0px;
-    height: 0px;
+    height: 50px;
     margin: 0;
     padding: 0px;
-    border: none;
     box-sizing: border-box;
-    transition: width 0.5s, height 0.5s;
+    transition: width 0.3s;
 }
 
 .button-panel textarea.visible {
-    display: block;
-    width: 80px;
-    height: 50px;
+    width: 75px;
     padding: 5px 0px 0px 5px;
-    margin: 2.5px 2.5px 0px 2.5px;
-    transition: width 0.5s, height 0.5s;
+    margin: 2.5px;
     font-size: 16px;
     border-radius: 4px;
     border: 1px solid #ccc;
+    transition: width 0.2s;
 }
 
 .button-panel textarea.night-mode {
@@ -101,8 +97,7 @@ body.night-mode {
     cursor: pointer;
 }
 
-.button-panel button.night-mode {
-    /* background-color: #666; */
+body.night-mode button {
     border: #eee 2px solid;
 }
 

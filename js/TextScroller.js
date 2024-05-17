@@ -4,9 +4,8 @@ class TextScroller {
         // Main DOM items
         this.scrollerBox = document.getElementsByClassName('text-wrapper')[0];
         this.scrollerText = document.getElementById('text');
-        this.userTextInput;
-        this.intialText;
-        this.userTextInput;
+        this.intialText = '...';
+        this.userTextInput = '...';
         this.wordPositionMap_Array = [];
 
         // DOM item position variabless 
@@ -16,23 +15,10 @@ class TextScroller {
         this.wordPostionMap_Object;
         this.visibleWords = {};
 
-        // Widths are defined in %
-        this.scrollerBoxWidthNarrowest = 45; 
-        this.scrollerBoxWidthWider = 70; 
-        this.scrollerBoxWidthWidest = 95; 
-
-        // Heights are defined in px
-        this.scrollerBoxHeightShortest = 100; 
-        this.scrollerBoxHeightTaller = 250; 
-        this.scrollerBoxHeightTallest = 400; 
-
-        // Font Size variables
-        this.fontSize = 30;
-        this.fontSizePresetSmallest = 20;
-        this.fontSizePresetSmaller = 30;
-        this.fontSizePresetMedium = 40;
-        this.fontSizePresetLarger = 50;
-        this.fontSizePresetLargest = 60;
+        // Styling variables
+        this.scrollerBoxWidth = 95;   // %
+        this.scrollerBoxHeight = 250; // px
+        this.fontSize = 40;           // px
         
         // Drag control + movement variables
         this.translate = 0;
@@ -40,15 +26,9 @@ class TextScroller {
         this.cursorStartX = 0;
         this.offsetDuringDrag = 0;
         this.dragMultiplier = 3;
-        this.dragPresetNone = 1;
-        this.dragPresetDouble = 2;
-        this.dragPresetTriple = 3;
 
         // Keyboard control variables
         this.keyboardStep = 100;
-        this.stepPresetSmall = 60;
-        this.stepPresetMedium = 100;
-        this.stepPresetLarge = 160;
         this.keyLeft = 'ArrowLeft';
         this.keyRight = 'ArrowRight';
 
@@ -56,7 +36,7 @@ class TextScroller {
         this.autoScrollInterval = null;
         this.scrollSpeed = 1; // pixels per interval
         this.frameRate = 5; // milliseconds
-        this.scrollerTextMovementStyle = 'transform 0s linear';
+        this.scrollerTextTransition = 'transform 0s linear';
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
 
         // Media query variables
@@ -77,56 +57,26 @@ class TextScroller {
 
         // Key listeners
         document.addEventListener('keydown', this.keyboardControl.bind(this));
-
-        // Button listeners
-        document.getElementById('playButton').addEventListener('click', this.toggleAutoScroll.bind(this));
-        document.getElementById('goButton').addEventListener('click', this.handleUserTextInput.bind(this));
-        document.getElementById('centerButton').addEventListener('click', this.centerText.bind(this));
-
-        document.getElementById('makeScrollerBoxNarrow').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthNarrowest));
-        document.getElementById('makeScrollerBoxWider').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWider));
-        document.getElementById('makeScrollerBoxWidest').addEventListener('click', this.setScrollerBoxWidth.bind(this, this.scrollerBoxWidthWidest));
-        
-        document.getElementById('makeScrollerBoxShort').addEventListener('click', this.setScrollerBoxHeight.bind(this, this.scrollerBoxHeightShortest));
-        document.getElementById('makeScrollerBoxTaller').addEventListener('click', this.setScrollerBoxHeight.bind(this, this.scrollerBoxHeightTaller));
-        document.getElementById('makeScrollerBoxTallest').addEventListener('click', this.setScrollerBoxHeight.bind(this, this.scrollerBoxHeightTallest));
-
-        document.getElementById('makeTextSmallest').addEventListener('click', this.setFontSize.bind(this, this.fontSizePresetSmallest));
-        document.getElementById('makeTextSmaller').addEventListener('click', this.setFontSize.bind(this, this.fontSizePresetSmaller));
-        document.getElementById('makeTextMedium').addEventListener('click', this.setFontSize.bind(this, this.fontSizePresetMedium));
-        document.getElementById('makeTextLarger').addEventListener('click', this.setFontSize.bind(this, this.fontSizePresetLarger));
-        document.getElementById('makeTextLargest').addEventListener('click', this.setFontSize.bind(this, this.fontSizePresetLargest));
-
-        document.getElementById('keypressSmall').addEventListener('click', this.setKeyBoardStep.bind(this, this.stepPresetSmall));
-        document.getElementById('keypressMedium').addEventListener('click', this.setKeyBoardStep.bind(this, this.stepPresetMedium));
-        document.getElementById('keypressLarge').addEventListener('click', this.setKeyBoardStep.bind(this, this.stepPresetLarge));
-
-        document.getElementById('dragSpeedSlow').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetNone));
-        document.getElementById('dragSpeedFast').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetDouble));
-        document.getElementById('dragSpeedFastest').addEventListener('click', this.setDragMultiplier.bind(this, this.dragPresetTriple));
-
-        document.getElementById('autoSwipeFastest').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 600, frameRate: 1500, autoScrollTransition: 'transform 1.5s ease-in-out' }));
-        document.getElementById('autoSwipeFast').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 400, frameRate: 1250, autoScrollTransition: 'transform 1.5s ease-in-out' }));
-        document.getElementById('autoSwipeSlow').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 200, frameRate: 1000, autoScrollTransition: 'transform 1.0s ease-in-out' }));
-        document.getElementById('autoScrollSlow').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 0.5, frameRate: 5, autoScrollTransition: 'transform linear' }));
-        document.getElementById('autoScrollFast').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 1, frameRate: 5, autoScrollTransition: 'transform linear' }));
-        document.getElementById('autoScrollFastest').addEventListener('click', this.setAutoScrollConfiguration.bind(this, { scrollSpeed: 1.5, frameRate: 5, autoScrollTransition: 'transform linear' }));
     }
 
     setInitialText(text) {
         this.intialText = text;
     }
 
-
     handleUserTextInput() {
-        this.centerText();
-        toolbar.closePasteZone(); // Globally accessable instance of ButtonPanel in /js/toolbar.js
 
-        const userInputTextarea = document.getElementById('textInput');
-        const userTextInput = userInputTextarea.value ? userInputTextarea.value : this.intialText;
-        if (userInputTextarea) userInputTextarea.value = ''; // Clear the user-input textarea
+        try {
+            const userInputTextarea = document.getElementById('textInput');
+            const userTextInput = userInputTextarea.value ? userInputTextarea.value : this.intialText;
+            if (userInputTextarea) userInputTextarea.value = ''; // Clear the user-input textarea
+            this.userTextInput = userTextInput;
+        } 
+        catch(error) {
+            console.log('userInputTextarea only prepared as needed');
+            const userTextInput = this.intialText;
+            this.userTextInput = userTextInput;
+        }
 
-        this.userTextInput = userTextInput;
         this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
 
         this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
@@ -315,7 +265,7 @@ class TextScroller {
                 wordsInView += `${word.text}`;
             }
         }
-        console.log(wordsInView);   
+        // console.log(wordsInView);   
     }
 
     jumpPositionTo(targetScrollPosition) {
@@ -360,7 +310,6 @@ class TextScroller {
     startDrag(e) {
         if(this.autoScrollInterval != null) {
             this.autoScrollPaused = true;
-            this.toggleAutoScrollIcons('pauseIcon');
             this.stopAutoScroll();
         }
         this.isDown = true;
@@ -397,13 +346,13 @@ class TextScroller {
     }
 
     applyAutoScrollTransition() {
-        this.scrollerText.style.transition = this.scrollerTextMovementStyle;
+        this.scrollerText.style.transition = this.scrollerTextTransition;
     }
 
     setAutoScrollConfiguration(autoScrollConfiguration) {
         this.scrollSpeed = autoScrollConfiguration.scrollSpeed;
         this.frameRate = autoScrollConfiguration.frameRate;
-        this.scrollerTextMovementStyle = autoScrollConfiguration.autoScrollTransition;
+        this.scrollerTextTransition = autoScrollConfiguration.autoScrollTransition;
 
         // To-Do: Encapsulate and move the following transition flush and reset 
         if(this.autoScrollInterval) {
@@ -428,7 +377,7 @@ class TextScroller {
         }
     }
 
-    setKeyBoardStep(stepSize) {
+    setKeyboardStep(stepSize) {
         this.keyboardStep = stepSize; // px
     }
 
@@ -466,7 +415,7 @@ class TextScroller {
         // Remap text at different size
         this.wordPostionMap_Object = {};
         this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+        // console.log('this.wordPositionMap:', this.wordPostionMap_Object);
 
         this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
         this.scrollerText.textContent = this.userTextInput;
@@ -478,7 +427,7 @@ class TextScroller {
         // Readjust visible words
         this.visibleWords = {};
         this.visibleWords = {...this.wordPostionMap_Object};
-        console.log('visible words:', this.visibleWords);
+        // console.log('visible words:', this.visibleWords);
         
         this.assessBoundaries();
     }
@@ -517,37 +466,12 @@ class TextScroller {
             this.applyAutoScrollTransition();
             this.shiftPosition(this.translate);
         }, this.frameRate); // frameRate is not FPS, but ms between animation
-        this.toggleAutoScrollIcons('stopIcon');
     }
 
     stopAutoScroll() {
         clearInterval(this.autoScrollInterval);
         this.autoScrollInterval = null;
-
-        if(!this.autoScrollPaused) this.toggleAutoScrollIcons('playIcon');
     }    
-
-    toggleAutoScrollIcons(iconToShow) {
-        const playIcon = document.getElementById('playIcon');
-        const pauseIcon = document.getElementById('pauseIcon');
-        const stopIcon = document.getElementById('stopIcon');
-
-        playIcon.classList.add('hidden');
-        pauseIcon.classList.add('hidden')
-        stopIcon.classList.add('hidden')
-
-        const targetIcon = document.getElementById(iconToShow);
-        targetIcon.classList.remove('hidden');
-    }
-
-    // mobileDiagPrint(text, item) {
-    //     const miniConsole = document.getElementById('miniConsole');
-    //     const toPush = document.createElement('p');
-    //     toPush.textContent = `${text} ${item}`;
-    //     toPush.style.marginLeft = '5px'
-    //     miniConsole.appendChild(toPush);
-    //     miniConsole.scrollTop = miniConsole.scrollHeight;
-    // }
 
     queryForIphone() {
         // Attempt two methods to check if device is iphone

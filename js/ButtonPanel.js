@@ -1,25 +1,68 @@
+// import { Button } from 'Button.js'
+// import { ToggleButton } from 'ToggleButton.js'
+
 class ButtonPanel {
     constructor(panelId) {
 
+        // to stay
         this.panel = document.getElementById(panelId);
         this.openPanelButton = this.panel.querySelector('.open');
         this.closePanelButton = this.panel.querySelector('.close');
-        this.toggleButtonContainers = this.panel.querySelectorAll('.toggle-button-container');
-
+        
         this.draggedItem;
-
-        this.addEventListeners()
+        
+        // to add
+        this.containerForNested = this.panel.querySelector('.nested-buttons');
+        this.buttonContainers = {};
+        this.dividerIndex = 0;
+        
+        // to remove
+        this.toggleButtonContainers;
     }
 
     addEventListeners() {
         this.openPanelButton.addEventListener('click', this.openPanel.bind(this));
         this.closePanelButton.addEventListener('click', this.closePanel.bind(this));
+
+        this.toggleButtonContainers = this.panel.querySelectorAll('.toggle-button-container');
         this.toggleButtonContainers.forEach((container) => {
             container.addEventListener('dragstart', this.handleDragStart.bind(this));
             container.addEventListener('dragover', this.handleDragOver.bind(this));
             container.addEventListener('drop', this.handleDrop.bind(this));
             container.addEventListener('dragend', this.handleDragEnd.bind(this));
         });
+    }
+
+    createButton(buttonName) {
+        const newButton = new Button(buttonName);
+        this.buttonContainers[buttonName] = newButton;
+    }
+
+    // ToggleButton can be currentState or nextState 
+    createToggleButton(buttonName, buttonType, saveState) {
+        const newButton = new ToggleButton(buttonType, buttonName, saveState);
+        this.buttonContainers[buttonName] = newButton;
+    }
+
+    loadButtonPanelHTML() {
+        for (const buttonName in this.buttonContainers) {
+            const buttonContainer = this.buttonContainers[buttonName];
+            const HTML = buttonContainer.prepareContainerElem();
+            buttonContainer.updateButtonElem();
+            this.containerForNested.appendChild(HTML);
+        }
+    }
+    
+    addInteriorDivider() {
+
+    }
+
+    removeInteriorDivider() {
+
+    }
+
+    addExteriorDivider() {
+
     }
 
     openPanel() {
@@ -63,19 +106,6 @@ class ButtonPanel {
         buttonContainers.forEach((container) => {
         
             this.addVisibleClass(container); 
-    
-            // Add state change event listeners to buttons within said toggle-button-container
-            const buttons = container.querySelectorAll('button');
-            buttons.forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    this.toggleNextButton(container, index);
-                });
-    
-                // Show current button
-                if(button.classList.contains('current')) {
-                    this.removeHiddenClass(button);
-                }
-            });
         });
     
         // Add special inline style for internal divider
@@ -91,20 +121,6 @@ class ButtonPanel {
         // Hide UNPINNED toggle-button-containers
         const buttonContainers = this.panel.querySelectorAll('.toggle-button-container.hidden-setting');
         buttonContainers.forEach((container) => {
-        
-            
-            // Hide current buttons for UNPINNED containers
-            const buttons = container.querySelectorAll('button');
-            buttons.forEach((button) => {
-                
-                // Hide current button
-                if(button.classList.contains('current')) {
-                    setTimeout(() => {
-                        this.addHiddenClass(button);
-                    }, 400);
-                }
-            });
-            
             this.removeVisibleClass(container); 
         });
     
@@ -134,19 +150,6 @@ class ButtonPanel {
                 this.addHiddenSettingClass(buttonContainer);
             }   
         });
-    }
-
-    toggleNextButton(container, index) {
-        const buttons = container.querySelectorAll('button');
-
-        // Remove 'current' class from last button
-        buttons[index].classList.remove('current');
-        buttons[index].classList.add('hidden');
-
-        // Add 'current' class to the next button
-        const nextIndex = (index + 1) % buttons.length;
-        buttons[nextIndex].classList.add('current');
-        buttons[nextIndex].classList.remove('hidden');
     }
 
     addHiddenClass(element) {
