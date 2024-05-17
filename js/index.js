@@ -81,6 +81,15 @@ readerApp.prepareSettingsPanel = function() {
         this.textScroller.setAutoScrollConfiguration(newStateValue);
     };
     this.settingsPanel.buttonContainers['autoScroll'].cycleButton();
+
+
+    const fullScreenStyler = new FullScreenStyler();
+    this.settingsPanel.buttonContainers['fullScreen'].mainFunction = () => {
+        const indexOfCurrentState = this.settingsPanel.buttonContainers['fullScreen'].indexOfCurrentState;
+        const newStateValue = this.settingsPanel.buttonContainers['fullScreen'].states[indexOfCurrentState]['value']; 
+        fullScreenStyler.toggleFullScreen(newStateValue);
+    };
+
 }
 
 readerApp.prepareToolbar = function() {
@@ -101,7 +110,6 @@ readerApp.prepareToolbar = function() {
         this.toolbar.buttonContainers['userTextInput'].indexOfCurrentState = 0;
         this.toolbar.buttonContainers['userTextInput'].updateButtonElem();
         pasteZoneStyler.closePasteZone();
-
     });
     
     this.toolbar.buttonContainers['read'].mainFunction = () => {
