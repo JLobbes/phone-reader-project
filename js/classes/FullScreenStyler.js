@@ -80,10 +80,12 @@ class FullScreenStyler {
         document.documentElement.classList.add('fullScreenMobile');
         this.screen.classList.add('fullScreenMobile');
         this.mobilefillerBlock.classList.add('fullScreenMobile');
-        this.smoothScrollByPixels(200, 500);
+        setTimeout(() => {
+            this.smoothScrollByPixels(400, 500);
 
-        // Add listener to exitFullScreen if user swipes up
-        this.addScollUpListener();
+            // Add listener to exitFullScreen if user swipes up
+            this.addScollUpListener();
+        }, 500);
     }
     
     exitFullScreenMobile() {

@@ -92,7 +92,7 @@ readerApp.prepareSettingsPanel = function() {
     this.settingsPanel.buttonContainers['fullScreen'].mainFunction = () => {
         const indexOfCurrentState = fullScreenButton.indexOfCurrentState;
         const newStateValue = fullScreenButton.states[indexOfCurrentState]['value']; 
-        if(!readerApp.isIphone) {
+        if(readerApp.isIphone) {
             fullScreenStyler.toggleFullScreenMobile(newStateValue);
         } else {
             fullScreenStyler.toggleFullScreen(newStateValue);
