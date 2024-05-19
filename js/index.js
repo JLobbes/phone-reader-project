@@ -13,8 +13,7 @@
 const readerApp = new Application();
 
 readerApp.prepareTextScroller = function() {
-    this.textScroller = new TextScroller();
-    this.textScroller.queryForIphone();
+    this.textScroller = new TextScroller(this.isIphone);
     this.textScroller.setInitialText(loadUpText);
     this.textScroller.handleUserTextInput();
 }
@@ -58,13 +57,19 @@ readerApp.prepareSettingsPanel = function() {
     };
     this.settingsPanel.buttonContainers['scrollerBoxHeight'].cycleButton();
 
-
-    this.settingsPanel.buttonContainers['keypressPower'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['keypressPower'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['keypressPower'].states[indexOfCurrentState]['value']; 
-        this.textScroller.setKeyboardStep(newStateValue);
-    };
-    this.settingsPanel.buttonContainers['keypressPower'].cycleButton();
+    const keypressPowerButton = this.settingsPanel.buttonContainers['keypressPower'];
+    if(!readerApp.isIphone) {
+        keypressPowerButton.mainFunction = () => {
+            const indexOfCurrentState = keypressPowerButton.indexOfCurrentState;
+            const newStateValue = keypressPowerButton.states[indexOfCurrentState]['value']; 
+            this.textScroller.setKeyboardStep(newStateValue);
+        };
+        keypressPowerButton.cycleButton();
+    } else {
+        delete this.settingsPanel.buttonContainers['keypressPower'];
+        console.log(this.settingsPanel.buttonContainers);
+        document.querySelector('#keypressPower').remove();
+    }
 
     
     this.settingsPanel.buttonContainers['dragSpeed'].mainFunction = () => {
@@ -83,10 +88,11 @@ readerApp.prepareSettingsPanel = function() {
     this.settingsPanel.buttonContainers['autoScroll'].cycleButton();
 
 
-    const fullScreenStyler = new FullScreenStyler();
+    const fullScreenButton = readerApp.settingsPanel.buttonContainers['fullScreen'];
+    const fullScreenStyler = new FullScreenStyler(fullScreenButton);
     this.settingsPanel.buttonContainers['fullScreen'].mainFunction = () => {
-        const indexOfCurrentState = this.settingsPanel.buttonContainers['fullScreen'].indexOfCurrentState;
-        const newStateValue = this.settingsPanel.buttonContainers['fullScreen'].states[indexOfCurrentState]['value']; 
+        const indexOfCurrentState = fullScreenButton.indexOfCurrentState;
+        const newStateValue = fullScreenButton.states[indexOfCurrentState]['value']; 
         fullScreenStyler.toggleFullScreen(newStateValue);
     };
 

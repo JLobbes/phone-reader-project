@@ -1,6 +1,6 @@
 
 class TextScroller {
-    constructor() {
+    constructor(isIphone) {
         // Main DOM items
         this.scrollerBox = document.getElementsByClassName('text-wrapper')[0];
         this.scrollerText = document.getElementById('text');
@@ -40,7 +40,7 @@ class TextScroller {
         this.autoScrollPaused = false; // used to pause autoscroll on user swipe action
 
         // Media query variables
-        this.isIphone = false;
+        this.isIphone = isIphone;
 
         this.addEventListeners();
         this.applySmoothTransition();
@@ -472,11 +472,11 @@ class TextScroller {
         this.autoScrollInterval = null;
     }    
 
-    queryForIphone() {
-        // Attempt two methods to check if device is iphone
-        if(/iPhone/.test(navigator.userAgent)) this.isIphone = true; 
+    // queryForIphone() {
+    //     // Attempt two methods to check if device is iphone
+    //     if(/iPhone/.test(navigator.userAgent)) this.isIphone = true; 
 
-        const mediaQuery = window.matchMedia("(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)");
-        if(mediaQuery.matches) this.isIphone = true; 
-    }
+    //     const mediaQuery = window.matchMedia("(max-width: 767px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)");
+    //     if(mediaQuery.matches) this.isIphone = true; 
+    // }
 }
