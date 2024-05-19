@@ -87,13 +87,16 @@ readerApp.prepareSettingsPanel = function() {
     };
     this.settingsPanel.buttonContainers['autoScroll'].cycleButton();
 
-
     const fullScreenButton = readerApp.settingsPanel.buttonContainers['fullScreen'];
-    const fullScreenStyler = new FullScreenStyler(fullScreenButton);
+    const fullScreenStyler = new FullScreenStyler('mobileFullScreenFiller', fullScreenButton);
     this.settingsPanel.buttonContainers['fullScreen'].mainFunction = () => {
         const indexOfCurrentState = fullScreenButton.indexOfCurrentState;
         const newStateValue = fullScreenButton.states[indexOfCurrentState]['value']; 
-        fullScreenStyler.toggleFullScreen(newStateValue);
+        if(!readerApp.isIphone) {
+            fullScreenStyler.toggleFullScreenMobile(newStateValue);
+        } else {
+            fullScreenStyler.toggleFullScreen(newStateValue);
+        }
     };
 
 }

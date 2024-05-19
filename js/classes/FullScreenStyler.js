@@ -12,8 +12,11 @@ class FullScreenStyler {
             // Adjust toolbar to bottom so play can be accessed on the bottom
             // Add listener so when user scrolls upwards, fullscreen mobile is exited.
     
-    constructor() {
+    constructor(fillerBlockID, fullScreenButton) {
         this.screen = document.body;
+        this.mobilefillerBlock = this.screen.querySelector(`#${fillerBlockID}`);
+
+        this.fullScreenButton = fullScreenButton;
         this.isButtonClickExit = false;
     }
 
@@ -22,6 +25,14 @@ class FullScreenStyler {
             this.goFullScreen();
         } else {
             this.exitFullScreen();
+        }
+    }
+
+    toggleFullScreenMobile(fullScreen) {
+        if(fullScreen) {
+            this.goFullScreenMobile();
+        } else {
+            this.exitFullScreenMobile();
         }
     }
 
@@ -43,8 +54,8 @@ class FullScreenStyler {
         setTimeout(() => {
             document.addEventListener('fullscreenchange', (event) => {
                 if(!this.isButtonClickExit) {
-                    readerApp.settingsPanel.buttonContainers['fullScreen'].indexOfCurrentState = 0;
-                    readerApp.settingsPanel.buttonContainers['fullScreen'].updateButtonElem();
+                    this.fullScreenButton.indexOfCurrentState = 0;
+                    this.fullScreenButton.updateButtonElem();
                 }
             }, { once: true });
         }, 25);
@@ -63,5 +74,58 @@ class FullScreenStyler {
         } else if (document.msExitFullscreen) { // IE/Edge
             document.msExitFullscreen();
         }
+    }
+
+    goFullScreenMobile() {
+        document.documentElement.classList.add('fullScreenMobile');
+        this.screen.classList.add('fullScreenMobile');
+        this.mobilefillerBlock.classList.add('fullScreenMobile');
+        this.smoothScrollByPixels(200, 500);
+
+        // Add listener to exitFullScreen if user swipes up
+        this.addScollUpListener();
+    }
+    
+    exitFullScreenMobile() {
+        document.documentElement.classList.remove('fullScreenMobile');
+        this.screen.classList.remove('fullScreenMode');
+        this.mobilefillerBlock.classList.remove('fullScreenMobile');
+    }
+
+    smoothScrollByPixels(pixels, duration) {
+        const start = window.scrollY;
+        // const end = start + pixels;
+        const distance = pixels;
+        const startTime = performance.now();
+  
+        const scroll = function() {
+          const now = performance.now();
+          const time = Math.min(1, (now - startTime) / duration);
+          const timeFunction = time * (2 - time); // Ease-in-out function
+  
+          window.scrollTo(0, Math.ceil(timeFunction * distance + start));
+  
+          if (time < 1) {
+            requestAnimationFrame(scroll);
+          }
+        }
+  
+        requestAnimationFrame(scroll);
+    }
+
+    addScollUpListener() {
+        let lastScrollY = window.scrollY;
+    
+        window.addEventListener('scroll', () => {
+          const currentScrollY = window.scrollY;
+          if (lastScrollY - currentScrollY >= 100) {
+            // User scrolled up by 100 pixels
+            this.fullScreenButton.advanceState();
+            lastScrollY = currentScrollY; // Update the last scroll position
+          } else if (currentScrollY > lastScrollY) {
+            // Update the last scroll position if user scrolls down
+            lastScrollY = currentScrollY;
+          }
+        });
     }
 }

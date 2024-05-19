@@ -10,9 +10,23 @@ body, html {
     font-family: Arial, sans-serif;
 }
 
+html.fullScreenMobile ,
+body.fullScreenMobile {
+    height: calc(100% + 200px);
+}
+
 body.night-mode {
     background: #111;
     color: #fff;
+}
+
+#mobileFullScreenFiller {
+    height: 0px;
+    transition: height 0.5s;
+}
+
+#mobileFullScreenFiller.fullScreenMobile {
+    height: 200px;
 }
 
 .text-wrapper {

@@ -1,5 +1,7 @@
 const loadUpText  = 
     `
+    2024.05.19 22:06
+
     Hi, I made this tool to help me read. Maybe it will help you as well.
         
     Press the stop button above (↑↑↑↑) to stop auto-scroll or just tap the screen to pause.

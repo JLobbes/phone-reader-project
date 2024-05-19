@@ -73,8 +73,8 @@
 - change scrollerText id of #text to #scrollerText
 - Create a favicon
 - ✔ Create a tools icon
-    - Hide everything on top in tools
-    - Make tools act like settings
+    - ✔ Hide everything on top in tools
+    - ✔ Make tools act like settings
 - Make a notification scroller for settings and tools.
 - Make a notifications buttons
 - Make a search tools
