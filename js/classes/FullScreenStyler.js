@@ -81,11 +81,8 @@ class FullScreenStyler {
         this.screen.classList.add('fullScreenMobile');
         this.mobilefillerBlock.classList.add('fullScreenMobile');
         setTimeout(() => {
-            this.smoothScrollByPixels(400, 500);
-
-            // Add listener to exitFullScreen if user swipes up
             this.addScollUpListener();
-        }, 500);
+        }, 25);
     }
     
     exitFullScreenMobile() {
@@ -120,8 +117,8 @@ class FullScreenStyler {
     
         window.addEventListener('scroll', () => {
           const currentScrollY = window.scrollY;
-          if (lastScrollY - currentScrollY >= 100) {
-            // User scrolled up by 100 pixels
+          if (lastScrollY - currentScrollY >= 200) {
+            // User scrolled up by 200 pixels
             this.fullScreenButton.advanceState();
             lastScrollY = currentScrollY; // Update the last scroll position
           } else if (currentScrollY > lastScrollY) {
