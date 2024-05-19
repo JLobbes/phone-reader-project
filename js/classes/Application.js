@@ -1,6 +1,7 @@
 class Application {
     constructor() {
         this.isIphone = false;
+        this.queryForIphone();
     }
 
     queryForIphone() {
