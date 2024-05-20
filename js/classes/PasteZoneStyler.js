@@ -39,8 +39,8 @@ class PasteZoneStyler {
     
             setTimeout(() => {
                 this.pasteTextZone.remove();
+                this.pasteTextZone = null;
             }, 200);
-            this.pasteTextZone = null;
         }
     }
 }
