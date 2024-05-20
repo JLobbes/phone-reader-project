@@ -114,19 +114,19 @@ settingsPanel.buttonContainers['keypressPower'].addState(
     'keypressMedium', 
     'images/keypress-double-icon.png',
     'Two arrows towards left to indicate key stroke moves text more.',
-    100
+    200
 );
 settingsPanel.buttonContainers['keypressPower'].addState(
     'keypressLarge', 
     'images/keypress-triple-icon.png',
     'Three left to indicate key stroke moves text most.',
-    160
+    300
 );
 settingsPanel.buttonContainers['keypressPower'].addState(
     'keypressSmall', 
     'images/keypress-icon.png',
     'Arrow left to indicate key stroke moves text less.',
-    60
+    100
 );
 
 

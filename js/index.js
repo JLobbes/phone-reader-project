@@ -121,9 +121,16 @@ readerApp.prepareToolbar = function() {
         pasteZoneStyler.closePasteZone();
     });
     
-    this.toolbar.buttonContainers['read'].mainFunction = () => {
+    const playPauseButton = this.toolbar.buttonContainers['read'];
+    playPauseButton.mainFunction = () => {
         this.textScroller.toggleAutoScroll();
     };
+    document.addEventListener('keypress', (event) => {
+        if(event.key == ' ') {
+            playPauseButton.advanceState();
+        }
+    })
+
 
     this.toolbar.buttonContainers['centerText'].mainFunction = () => {
         this.textScroller.centerText();

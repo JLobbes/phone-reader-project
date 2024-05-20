@@ -28,9 +28,10 @@ class TextScroller {
         this.dragMultiplier = 3;
 
         // Keyboard control variables
-        this.keyboardStep = 100;
+        this.keyboardStep = 200;
         this.keyLeft = 'ArrowLeft';
         this.keyRight = 'ArrowRight';
+        this.spaceBar = '';
 
         // Animation variables
         this.autoScrollInterval = null;
@@ -373,7 +374,11 @@ class TextScroller {
         } else if (e.key === this.keyRight) {
             this.translate += this.keyboardStep;
             this.shiftPosition(this.translate);
-        }
+        } 
+        // Below logic is defined in index. Unsure of final location.
+        // else if (e.key === this.spaceBar) {
+        //     this.toggleAutoScroll();   
+        // }
     }
 
     setKeyboardStep(stepSize) {
