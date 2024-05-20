@@ -106,6 +106,7 @@ readerApp.prepareToolbar = function() {
     this.toolbar.loadButtonPanelHTML(); 
     this.toolbar.addEventListeners();
 
+
     const pasteZoneStyler = new PasteZoneStyler();
     this.toolbar.buttonContainers['userTextInput'].mainFunction = () => {
         const indexOfCurrentState = this.toolbar.buttonContainers['userTextInput'].indexOfCurrentState;
@@ -121,6 +122,7 @@ readerApp.prepareToolbar = function() {
         pasteZoneStyler.closePasteZone();
     });
     
+
     const playPauseButton = this.toolbar.buttonContainers['read'];
     playPauseButton.mainFunction = () => {
         this.textScroller.toggleAutoScroll();

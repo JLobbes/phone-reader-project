@@ -119,7 +119,9 @@ class FullScreenStyler {
           const currentScrollY = window.scrollY;
           if (lastScrollY - currentScrollY >= 200) {
             // User scrolled up by 200 pixels
-            this.fullScreenButton.advanceState();
+            this.fullScreenButton.indexOfCurrentState = 0;
+            this.fullScreenButton.updateButtonElem();
+            this.exitFullScreenMobile();
             lastScrollY = currentScrollY; // Update the last scroll position
           } else if (currentScrollY > lastScrollY) {
             // Update the last scroll position if user scrolls down
