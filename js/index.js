@@ -39,7 +39,11 @@ readerApp.prepareSettingsPanel = function() {
         const newStateValue = this.settingsPanel.buttonContainers['adjustFontSize'].states[indexOfCurrentState]['value']; 
         this.textScroller.setFontSize(newStateValue);
     };
-    this.settingsPanel.buttonContainers['adjustFontSize'].cycleButton();
+    document.fonts.ready.then(() => {
+        // Ensure that styles are applied before initial text mapping
+        this.settingsPanel.buttonContainers['adjustFontSize'].cycleButton();
+    });
+
 
     
     this.settingsPanel.buttonContainers['scrollerBoxWidth'].mainFunction = () => {

@@ -58,7 +58,16 @@ class TextScroller {
 
         // Key listeners
         document.addEventListener('keydown', this.keyboardControl.bind(this));
-    }
+        
+        // Boundary Assessment & Protection with delay
+        const delayedAssessBoundaries = () => {
+            setTimeout(() => this.assessBoundaries(), 200); // Adjust the delay time (in milliseconds) as needed
+        };
+
+        document.addEventListener('touchend', delayedAssessBoundaries);
+        document.addEventListener('mouseup', delayedAssessBoundaries);
+        document.addEventListener('keyup', delayedAssessBoundaries);
+        }
 
     setInitialText(text) {
         this.intialText = text;
@@ -83,7 +92,18 @@ class TextScroller {
         this.scrollerText.textContent = this.userTextInput;
 
         this.visibleWords = {...this.wordPostionMap_Object};
-        this.assessBoundaries();
+
+        // The following is a patch to resovle boundary protection conflict with centering text
+        // To-Do: Debug
+        setTimeout(() => {
+            this.centerText();
+            this.assessBoundaries();
+        }, 50);
+
+        setTimeout(() => {
+            if(this.currentScrollPosition != 0) this.centerText();
+        }, 500);
+
     }
 
     prepareTextInSpan(index) {
@@ -200,15 +220,9 @@ class TextScroller {
     getWordMap() {
         // Below logic is breaking text into span for measurment
 
-        // Split the text into an array of words (including spaces)
+        // Split the text into an array of letters (including spaces & Chinese characters)
         const textRaw = this.userTextInput;
-        // const textProcessed = textRaw.match(/\S+|\s+/g) || [];
-        // const textProcessed = textRaw.match(/[\u4E00-\u9FFF]|[\u3400-\u4DBF]|[\u20000-\u2A6DF]|\S+|\s+/g) || [];
-        // const textProcessed = textRaw.match(/[\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DF]|\S+|\s+/g) || [];
         const textProcessed = textRaw.match(/[\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DF]|[a-zA-Z]+|\d+|[^\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DFa-zA-Z0-9\s]+|\s+/g) || [];
-
-
-
 
         // Create the words array without calculating widths
         this.wordPositionMap_Array = textProcessed.map((word) => new Word(word, 0));
@@ -294,17 +308,17 @@ class TextScroller {
         this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
         
         setTimeout(() => {
-            
             this.endDrag();
             this.translate = targetScrollPosition;
             this.scrollerText.style.transform = `translateX(${targetScrollPosition}px)`;
-        }, 1000); // To clean up after user mouseup event sets this.translate to positive number.
+            this.assessBoundaries();
+        }, 500); // To clean up after user mouseup event sets this.translate to positive number.
     }
     
     shiftPosition(shiftAmount) {
         this.scrollerText.style.transform = `translateX(${shiftAmount}px)`;
         this.getCurrentScrollPosition();
-        this.assessBoundaries();
+        // this.assessBoundaries();
         
         // console.log(`scollerText shifted to: ${this.getCurrentScrollPosition()}`);
     }
@@ -425,6 +439,7 @@ class TextScroller {
         // Remap text at different size
         this.wordPostionMap_Object = {};
         this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
+        console.log(this.fontSize);
         console.log('this.wordPositionMap:', this.wordPostionMap_Object);
 
         this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
@@ -438,7 +453,7 @@ class TextScroller {
         this.visibleWords = {};
         this.visibleWords = {...this.wordPostionMap_Object};
         // console.log('visible words:', this.visibleWords);
-        
+
         this.assessBoundaries();
     }
 
