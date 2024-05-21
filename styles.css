@@ -90,7 +90,7 @@ body.night-mode {
     transition: width 0.2s;
 }
 
-.body.night-mode textarea{
+body.night-mode textarea{
     background-color: #222;
     color: #bbb;
 }

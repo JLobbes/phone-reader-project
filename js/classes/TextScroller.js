@@ -202,7 +202,13 @@ class TextScroller {
 
         // Split the text into an array of words (including spaces)
         const textRaw = this.userTextInput;
-        const textProcessed = textRaw.match(/\S+|\s+/g) || [];
+        // const textProcessed = textRaw.match(/\S+|\s+/g) || [];
+        // const textProcessed = textRaw.match(/[\u4E00-\u9FFF]|[\u3400-\u4DBF]|[\u20000-\u2A6DF]|\S+|\s+/g) || [];
+        // const textProcessed = textRaw.match(/[\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DF]|\S+|\s+/g) || [];
+        const textProcessed = textRaw.match(/[\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DF]|[a-zA-Z]+|\d+|[^\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DFa-zA-Z0-9\s]+|\s+/g) || [];
+
+
+
 
         // Create the words array without calculating widths
         this.wordPositionMap_Array = textProcessed.map((word) => new Word(word, 0));
@@ -265,7 +271,7 @@ class TextScroller {
                 wordsInView += `${word.text}`;
             }
         }
-        // console.log(wordsInView);   
+        console.log(wordsInView);   
     }
 
     jumpPositionTo(targetScrollPosition) {
@@ -419,7 +425,7 @@ class TextScroller {
         // Remap text at different size
         this.wordPostionMap_Object = {};
         this.wordPostionMap_Object = this.getWordMap(); // Measure the text in spans
-        // console.log('this.wordPositionMap:', this.wordPostionMap_Object);
+        console.log('this.wordPositionMap:', this.wordPostionMap_Object);
 
         this.scrollerText.innerHTML = '' // Clear the newly measured spans as movement is resource 
         this.scrollerText.textContent = this.userTextInput;
