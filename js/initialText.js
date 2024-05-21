@@ -1,6 +1,6 @@
 const loadUpText  = 
     `
-    2024.05.20 08:36
+    2024.05.20 10:06
 
     Hi, I made this tool to help me read. Maybe it will help you as well.
         
@@ -24,4 +24,4 @@ const loadUpText  =
     `
 ;
 
-// export { loadUpText }; 
+// export { loadUpText };

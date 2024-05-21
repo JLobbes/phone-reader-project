@@ -127,11 +127,13 @@ readerApp.prepareToolbar = function() {
     playPauseButton.mainFunction = () => {
         this.textScroller.toggleAutoScroll();
     };
-    document.addEventListener('keypress', (event) => {
-        if(event.key == ' ') {
-            playPauseButton.advanceState();
-        }
-    })
+    if(!readerApp.isIphone) {
+        document.addEventListener('keypress', (event) => {
+            if(event.key == ' ') {
+                playPauseButton.advanceState();
+            }
+        })
+    }
 
 
     this.toolbar.buttonContainers['centerText'].mainFunction = () => {
