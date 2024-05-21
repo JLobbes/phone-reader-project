@@ -104,7 +104,6 @@ class TextScroller {
                 this.centerText();
                 this.assessBoundaries();
             }
-            
         }, 1000);
 
     }
@@ -225,7 +224,16 @@ class TextScroller {
 
         // Split the text into an array of letters (including spaces & Chinese characters)
         const textRaw = this.userTextInput;
-        const textProcessed = textRaw.match(/[\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DF]|[a-zA-Z]+|\d+|[^\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DFa-zA-Z0-9\s]+|\s+/g) || [];
+
+        // Check if there are any common Chinese characters in the text as a best-guess test for Chinese
+        const hasChineseCharacters = /[的一是在不了有和人這中大為上個國我以要他時來用們生到作地於出就分對成會可主發年動同工也能下過子說產種面而方後多定行學法所民得經十三之進著等部度家電力裡如水化高自二理起小物現實加量都兩體制機當使點從業本去把性好應開它合還因由其些然前外天政四日那社義事平形相全表間樣與關各重新線內數正心反你明看原又麼利比或但質氣第向道命此變條只沒結解問意建月公無系軍很情者最立代想已通並提直題黨程展五果料象員革位入常文總次品式活設及管特件長求老頭基資邊流路級少圖山統接知較將組見計別她手角期根論運農指幾九區強放決西被再做客實線名傳爭設士星車勢演熱標急嚴英奇買九該失才察步隨史權馬強草廠夜皮固屬找段油查整深轉術復職覺冷具推顯候曾觀船秀課洲孤凱印藍劃藝剛注環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔村羅貨橋額序雅層爸房編止課怕環普奔]/.test(textRaw);
+
+        // Determine the regex pattern based on the presence of Chinese characters
+        const regexPattern = hasChineseCharacters
+            ? /[\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DF]|[a-zA-Z]+|\d+|[^\u4E00-\u9FFF\u3400-\u4DBF\u20000-\u2A6DFa-zA-Z0-9\s]+|\s+/g
+            : /\S+|\s+/g;
+
+        const textProcessed = textRaw.match(regexPattern) || [];
 
         // Create the words array without calculating widths
         this.wordPositionMap_Array = textProcessed.map((word) => new Word(word, 0));
