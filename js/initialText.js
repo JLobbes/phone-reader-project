@@ -1,6 +1,6 @@
 const loadUpText  = 
     `
-    2024.05.20 11:42
+    2024.05.20 11:48
 
     Hi, I made this tool to help me read. Maybe it will help you as well.
         

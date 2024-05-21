@@ -97,12 +97,15 @@ class TextScroller {
         // To-Do: Debug
         setTimeout(() => {
             this.centerText();
-            this.assessBoundaries();
         }, 50);
-
+        
         setTimeout(() => {
-            if(this.currentScrollPosition != 0) this.centerText();
-        }, 500);
+            if(this.currentScrollPosition != 0) {
+                this.centerText();
+                this.assessBoundaries();
+            }
+            
+        }, 1000);
 
     }
 
