@@ -406,10 +406,6 @@ class TextScroller {
             this.translate += this.keyboardStep;
             this.shiftPosition(this.translate);
         } 
-        // Below logic is defined in index. Unsure of final location.
-        // else if (e.key === this.spaceBar) {
-        //     this.toggleAutoScroll();   
-        // }
     }
 
     setKeyboardStep(stepSize) {
