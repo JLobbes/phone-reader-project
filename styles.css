@@ -111,6 +111,10 @@ body.night-mode textarea{
     color: #bbb;
 }
 
+.button-panel::-webkit-scrollbar {
+    width: 0px;
+}
+
 .button-panel textarea::-webkit-scrollbar {
     width: 0px;
 }
