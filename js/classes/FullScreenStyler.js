@@ -37,7 +37,7 @@ class FullScreenStyler {
             this.screen.msRequestFullscreen();
         }
 
-        // The is covers the case of user exiting from fullscreen via the "Escape" button
+        // The covers the case of user exiting from fullscreen via the "Escape" button
         // Unable to solve F11 button press + settings menu entry to fullscreen
         //      These two methods don't trigger browser events and fullscreen can't
         //      be check by reliable methods in that case.
@@ -48,7 +48,7 @@ class FullScreenStyler {
                     this.fullScreenButton.updateButtonElem();
                 }
             }, { once: true });
-        }, 25);
+        }, 50);
         this.isButtonClickExit = false;
     }
 
@@ -81,27 +81,6 @@ class FullScreenStyler {
         this.screen.classList.remove('fullScreenMobile');
         this.topFillerblock.classList.remove('fullScreenMobile');
         this.bottomFillerblock.classList.remove('fullScreenMobile');
-    }
-
-    smoothScrollByPixels(pixels, duration) {
-        const start = window.scrollY;
-        // const end = start + pixels;
-        const distance = pixels;
-        const startTime = performance.now();
-  
-        const scroll = function() {
-          const now = performance.now();
-          const time = Math.min(1, (now - startTime) / duration);
-          const timeFunction = time * (2 - time); // Ease-in-out function
-  
-          window.scrollTo(0, Math.ceil(timeFunction * distance + start));
-  
-          if (time < 1) {
-            requestAnimationFrame(scroll);
-          }
-        }
-  
-        requestAnimationFrame(scroll);
     }
 
     addScollUpListener() {
