@@ -1,20 +1,10 @@
 // import { FullScreenChecker } from '/js/classes/FullScreenChecker.js'
 
 class FullScreenStyler {
-    // To-Do:
-        // Assume F11 triggers full screen
-        // Adjust FullScreenChecker accordingly to include that.
-        // Write & incorporate MobileChecker
-        // Write logic for full screen for mobile.
-            // Add fixed width block on top of body or within 
-            // Auto scroll to bottom of screen
-            // Adjust height to medium setting
-            // Adjust toolbar to bottom so play can be accessed on the bottom
-            // Add listener so when user scrolls upwards, fullscreen mobile is exited.
-    
-    constructor(fillerBlockID, fullScreenButton) {
+    constructor(fillerBlockTopID, fillerBlockBottomID, fullScreenButton) {
         this.screen = document.body;
-        this.mobilefillerBlock = this.screen.querySelector(`#${fillerBlockID}`);
+        this.topFillerblock = this.screen.querySelector(`#${fillerBlockTopID}`);
+        this.bottomFillerblock = this.screen.querySelector(`#${fillerBlockBottomID}`);
 
         this.fullScreenButton = fullScreenButton;
         this.isButtonClickExit = false;
@@ -79,7 +69,8 @@ class FullScreenStyler {
     goFullScreenMobile() {
         document.documentElement.classList.add('fullScreenMobile');
         this.screen.classList.add('fullScreenMobile');
-        this.mobilefillerBlock.classList.add('fullScreenMobile');
+        this.topFillerblock.classList.add('fullScreenMobile');
+        this.bottomFillerblock.classList.add('fullScreenMobile');
         setTimeout(() => {
             this.addScollUpListener();
         }, 25);
@@ -87,8 +78,9 @@ class FullScreenStyler {
     
     exitFullScreenMobile() {
         document.documentElement.classList.remove('fullScreenMobile');
-        this.screen.classList.remove('fullScreenMode');
-        this.mobilefillerBlock.classList.remove('fullScreenMobile');
+        this.screen.classList.remove('fullScreenMobile');
+        this.topFillerblock.classList.remove('fullScreenMobile');
+        this.bottomFillerblock.classList.remove('fullScreenMobile');
     }
 
     smoothScrollByPixels(pixels, duration) {

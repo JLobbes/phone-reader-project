@@ -12,7 +12,23 @@ body, html {
 
 html.fullScreenMobile ,
 body.fullScreenMobile {
-    height: calc(100% + 400px);
+    height: calc(150%);
+}
+
+#mobileFullScreenFillerBottom,
+#mobileFullScreenFillerTop {
+    height: 0%;
+    transition: height 0.5s;
+}
+
+#mobileFullScreenFillerTop.fullScreenMobile {
+    height: 37%;
+    transition: height 0.5s;
+}
+
+#mobileFullScreenFillerBottom.fullScreenMobile {
+    height: 13%;
+    transition: height 0.5s;
 }
 
 body.night-mode {
